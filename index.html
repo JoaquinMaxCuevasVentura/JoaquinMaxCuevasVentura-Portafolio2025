@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio profesional de Joaquín Max Cuevas Ventura - Arquitectura y Diseño Gráfico">
     <title>PORTAFOLIO 2025 | Joaquin Max Cuevas Ventura</title>
 
-    <!-- 1. FUENTE ARCHIVO -->
+    <!-- 1. FUENTE ARCHIVO (Preconnect + Preload optimizado) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -17,24 +18,33 @@
     <style>
         /* --- CONFIGURACIÓN VISUAL --- */
         :root {
-            --bg-color: #050505;      
+            --bg-color: #222223;      
             --accent-color: #dc6b2f;
             --text-main: #FFFFFF;     
             --ui-opacity: 0.7;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
         }
 
         body, html {
             height: 100%;
             margin: 0;
             background-color: var(--bg-color);
-            font-family: 'Archivo', sans-serif !important;
+            font-family: 'Archivo', sans-serif;
             overflow: hidden;
         }
 
         /* Capa de Ruido */
         #grained-container {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0; 
             pointer-events: none;
         }
@@ -63,19 +73,29 @@
             color: var(--text-main) !important;
             border-radius: 0 !important;
             margin: 0 8px !important;
-            transition: all 0.2s ease;
+            transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
             opacity: var(--ui-opacity);
             width: auto !important;
             height: auto !important;
         }
 
         /* Interacción (Naranja) */
-        .df-ui-btn:hover, .df-ui-btn.active, .df-ui-btn.info-active {
+        .df-ui-btn:hover,
+        .df-ui-btn:focus,
+        .df-ui-btn.active,
+        .df-ui-btn.info-active {
             color: var(--accent-color) !important;
             background: transparent !important;
             opacity: 1 !important;
             transform: scale(1.3);
             text-shadow: 0 0 10px rgba(220, 107, 47, 0.5);
+            outline: none;
+        }
+
+        /* Focus visible para accesibilidad */
+        .df-ui-btn:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 4px;
         }
 
         /* Corrección del Folio */
@@ -87,6 +107,7 @@
             box-shadow: none !important;
             border: none !important;
         }
+
         .df-ui-page input {
             width: 40px !important;
             text-align: center !important;
@@ -99,23 +120,28 @@
             height: 30px !important;
             box-shadow: none !important;
         }
-        .df-ui-btn.df-ui-prev, .df-ui-btn.df-ui-next { margin: 0 2px !important; }
+
+        .df-ui-btn.df-ui-prev,
+        .df-ui-btn.df-ui-next {
+            margin: 0 2px !important;
+        }
 
         /* --- GESTIÓN DE HIPERVÍNCULOS --- */
-        .df-page-content .df-link, .df-page-content a { 
+        .df-page-content .df-link,
+        .df-page-content a { 
             opacity: 0 !important; 
             background: transparent !important; 
             cursor: pointer !important;
         }
-        .df-page-content .df-link:hover, .df-page-content a:hover { 
-            opacity: 0 !important; 
-        }
 
-        /* --- VENTANA MODAL INFO (AJUSTADA) --- */
+        /* --- VENTANA MODAL INFO --- */
         .modal-overlay {
             display: none; 
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.96); 
             z-index: 9999;
             justify-content: center;
@@ -123,7 +149,11 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        .modal-overlay.show { display: flex; opacity: 1; }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
 
         .modal-content {
             color: #fff;
@@ -131,86 +161,315 @@
             width: 85%;
             text-align: center;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
         }
-        .modal-line { width: 40px; height: 2px; background-color: var(--accent-color); margin: 20px auto; }
+
+        .modal-line {
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+            margin: 20px auto;
+        }
         
-        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; line-height: 1.2; }
-        .modal-subtitle { font-size: 11px; color: var(--accent-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-        .modal-body { font-size: 14px; color: #ccc; line-height: 1.6; font-weight: 300; }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .modal-subtitle {
+            font-size: 11px;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.6;
+            font-weight: 300;
+        }
         
         .modal-contact {
             margin-top: 30px;
             border-top: 1px solid #222;
-            padding-top: 25px; /* Un poco más de aire arriba */
+            padding-top: 25px;
             display: flex;
             flex-direction: column;
-            gap: 18px; /* Separación más limpia entre bloques */
+            gap: 18px;
         }
 
-        /* --- ESTILOS DE CONTACTO (REDUCIDOS) --- */
+        /* --- ESTILOS DE CONTACTO --- */
         .contact-link {
-            color: #666; /* Un gris un poco más oscuro para la etiqueta */
+            color: #666;
             text-decoration: none;
-            font-size: 11px; /* REDUCIDO: Antes 13px */
-            letter-spacing: 2px; /* MÁS ESPACIADO: Para elegancia técnica */
+            font-size: 11px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            transition: 0.2s;
+            transition: color 0.2s ease;
             cursor: pointer;
-            padding: 0;
+            padding: 8px 4px;
+            border: none;
+            background: transparent;
+            display: block;
+            width: 100%;
         }
         
         .contact-link span {
             display: block;
             color: #fff;
-            font-weight: 400; /* REDUCIDO: Antes 600, ahora más fino */
-            font-size: 14px; /* REDUCIDO: Antes 16px */
+            font-weight: 400;
+            font-size: 14px;
             letter-spacing: 0.5px;
-            margin-top: 4px; /* Menos espacio entre etiqueta y dato */
+            margin-top: 4px;
+            transition: color 0.2s ease;
+            word-break: break-word;
         }
 
-        .contact-link:hover { color: var(--accent-color); }
-        .contact-link:hover span { color: var(--accent-color); }
+        .contact-link:hover,
+        .contact-link:focus {
+            color: var(--accent-color);
+            outline: none;
+        }
 
-        .close-modal { position: absolute; top: -50px; right: 0; color: #666; font-size: 30px; cursor: pointer; transition: 0.2s; font-weight: 100; }
-        .close-modal:hover { color: var(--accent-color); }
+        .contact-link:hover span,
+        .contact-link:focus span {
+            color: var(--accent-color);
+        }
+
+        .contact-link:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
+        .contact-link[aria-disabled="true"] {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: #666;
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            font-weight: 100;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            line-height: 1;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: var(--accent-color);
+            outline: none;
+        }
+
+        .close-modal:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
         
-        .ti-info-custom:before { content: "\e645"; } 
+        .ti-info-custom::before {
+            content: "\e645";
+        }
 
+        /* --- PANTALLA DE ERROR PDF --- */
+        .pdf-error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 1px;
+            z-index: 5;
+            display: none;
+        }
+
+        .pdf-error-message.show {
+            display: block;
+        }
+
+        /* --- RESPONSIVE: MÓVILES ESTRECHOS --- */
+        @media screen and (max-width: 380px) {
+            .modal-content {
+                width: 92%;
+                padding: 15px;
+            }
+
+            .modal-title {
+                font-size: 16px;
+                letter-spacing: 1px;
+            }
+
+            .modal-subtitle {
+                font-size: 10px;
+                margin-bottom: 20px;
+            }
+
+            .modal-body {
+                font-size: 13px;
+            }
+
+            .contact-link {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+            }
+
+            .contact-link span {
+                font-size: 12px;
+            }
+
+            .close-modal {
+                top: -40px;
+                right: -5px;
+                font-size: 26px;
+            }
+
+            .modal-contact {
+                gap: 14px;
+                padding-top: 20px;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            .modal-content {
+                width: 95%;
+                padding: 12px;
+            }
+
+            .modal-title {
+                font-size: 14px;
+            }
+
+            .contact-link span {
+                font-size: 11px;
+            }
+        }
+
+        /* Asegurar visibilidad en landscape móvil */
+        @media screen and (max-height: 500px) {
+            .modal-content {
+                max-height: 85vh;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .modal-subtitle {
+                margin-bottom: 15px;
+            }
+
+            .close-modal {
+                top: -35px;
+            }
+        }
+
+        /* Skip link para accesibilidad */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .sr-only:focus {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: auto;
+            height: auto;
+            padding: 10px 20px;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+            background: var(--accent-color);
+            color: #fff;
+            z-index: 99999;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+    <!-- Skip link para navegación por teclado -->
+    <a href="#flipbook-container" class="sr-only">Saltar al portafolio</a>
 
     <!-- FONDO -->
-    <div id="grained-container"></div>
+    <div id="grained-container" aria-hidden="true"></div>
+
+    <!-- MENSAJE DE ERROR PDF -->
+    <div id="pdf-error" class="pdf-error-message" role="alert" aria-live="polite">
+        <p>No se pudo cargar el documento.</p>
+        <p>Por favor, recarga la página.</p>
+    </div>
 
     <!-- MODAL INFO -->
-    <div id="infoModal" class="modal-overlay">
+    <div 
+        id="infoModal" 
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+    >
         <div class="modal-content">
-            <span class="close-modal" onclick="toggleInfo()">&times;</span>
+            <button 
+                type="button"
+                class="close-modal" 
+                id="close-modal-btn"
+                aria-label="Cerrar ventana de información"
+            >&times;</button>
             
-            <div class="modal-title">JOAQUIN MAX<br>CUEVAS VENTURA</div>
-            <div class="modal-subtitle">PORTAFOLIO 2025</div>
+            <h1 id="modal-title" class="modal-title">JOAQUIN MAX<br>CUEVAS VENTURA</h1>
+            <p class="modal-subtitle">PORTAFOLIO 2025</p>
             
-            <div class="modal-line"></div>
+            <div class="modal-line" aria-hidden="true"></div>
             
-            <div class="modal-body">
+            <div id="modal-description" class="modal-body">
                 <p>Arquitectura y diseño gráfico</p>
                 
-                <div class="modal-contact">
+                <div class="modal-contact" role="group" aria-label="Información de contacto">
                     <!-- EMAIL -->
-                    <a href="mailto:JoACKo333@gmail.com" class="contact-link" title="Enviar correo">
+                    <a 
+                        href="mailto:JoACKo333@gmail.com" 
+                        class="contact-link" 
+                        aria-label="Enviar correo electrónico a JoACKo333@gmail.com"
+                    >
                         CORREO
                         <span>JoACKo333@gmail.com</span>
                     </a>
 
                     <!-- TELÉFONO -->
-                    <div class="contact-link" onclick="copyPhone()" title="Copiar número">
+                    <button 
+                        type="button"
+                        class="contact-link" 
+                        id="phone-btn"
+                        aria-label="Copiar número de teléfono al portapapeles"
+                    >
                         TELÉFONO / WHATSAPP
                         <span id="phone-display">+591 78834651</span>
-                    </div>
+                    </button>
 
                     <!-- UBICACIÓN -->
-                    <div class="contact-link" style="cursor: default; pointer-events: none;">
+                    <div class="contact-link" aria-disabled="true" role="text">
                         La Paz, Bolivia
                     </div>
                 </div>
@@ -219,7 +478,7 @@
     </div>
 
     <!-- LIBRO -->
-    <div id="flipbook-container"></div>
+    <main id="flipbook-container" role="main" aria-label="Visualizador de portafolio interactivo"></main>
 
     <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -227,92 +486,308 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
 
     <script>
-        // 1. INICIAR EL GRANO
-        try {
-            grained('#grained-container', {
-                "animate": true, "patternWidth": 100, "patternHeight": 100,
-                "grainOpacity": 0.05, "grainDensity": 1, "grainWidth": 1, "grainHeight": 1
-            });
-        } catch(e) { console.log("Error grano"); }
+        (function() {
+            'use strict';
 
-        // 2. FUNCIONES CONTACTO
-        function copyPhone() {
-            const phone = "+591 78834651";
-            navigator.clipboard.writeText(phone).then(() => {
-                const display = document.getElementById('phone-display');
-                const originalText = display.innerText;
-                
-                display.innerText = "¡NÚMERO COPIADO!";
-                display.style.color = "var(--accent-color)";
-                display.style.fontWeight = "600";
-                
-                setTimeout(() => {
-                    display.innerText = originalText;
-                    display.style.color = ""; // Volver al color CSS original (blanco/hover)
-                    display.style.fontWeight = "400";
-                }, 2000);
-            });
-        }
+            // --- CONSTANTES ---
+            const PHONE_NUMBER = '+591 78834651';
+            const PDF_NAME = 'PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf';
+            const COPY_FEEDBACK_DURATION = 2000;
 
-        // 3. FUNCIONES MODAL
-        function toggleInfo() {
-            var modal = document.getElementById('infoModal');
-            var btn = document.getElementById('btn-info-custom');
-            
-            if (modal.classList.contains('show')) {
-                modal.classList.remove('show');
-                setTimeout(function() { modal.style.display = 'none'; }, 300); 
-                if(btn) btn.classList.remove('info-active');
-            } else {
-                modal.style.display = 'flex';
-                setTimeout(function() { modal.classList.add('show'); }, 10);
-                if(btn) btn.classList.add('info-active');
+            // --- ELEMENTOS DEL DOM ---
+            const modal = document.getElementById('infoModal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const phoneBtn = document.getElementById('phone-btn');
+            const phoneDisplay = document.getElementById('phone-display');
+            const pdfErrorEl = document.getElementById('pdf-error');
+
+            // Variable para guardar el elemento que abrió el modal
+            let lastFocusedElement = null;
+
+            // --- 1. INICIAR GRAINED (TEXTURA DE FONDO) ---
+            function initGrained() {
+                try {
+                    if (typeof grained === 'function') {
+                        grained('#grained-container', {
+                            animate: true,
+                            patternWidth: 100,
+                            patternHeight: 100,
+                            grainOpacity: 0.05,
+                            grainDensity: 1,
+                            grainWidth: 1,
+                            grainHeight: 1
+                        });
+                    }
+                } catch (e) {
+                    console.warn('[Grained] No se pudo inicializar la textura de fondo:', e.message);
+                }
             }
-        }
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('infoModal')) toggleInfo();
-        }
 
-        // 4. INICIAR LIBRO
-        jQuery(document).ready(function() {
-            
-            var pdfName = "PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf";
+            // --- 2. FUNCIÓN COPIAR TELÉFONO (CON FALLBACK) ---
+            function copyPhone() {
+                const originalText = phoneDisplay.textContent;
 
-            var bookOptions = {
-                source: pdfName,
-                webgl: true,
-                height: "100%",
-                duration: 700, 
-                backgroundColor: "transparent",
-                disableFolderPath: true, 
+                function showFeedback(success) {
+                    phoneDisplay.textContent = success ? '¡NÚMERO COPIADO!' : '¡ERROR AL COPIAR!';
+                    phoneDisplay.style.color = success ? 'var(--accent-color)' : '#ff4444';
+                    phoneDisplay.style.fontWeight = '600';
 
-                text: {
-                    toggleSound: "SONIDO",
-                    toggleThumbnails: "VISTA",
-                    toggleOutline: "INDICE",
-                    previousPage: "ANT",
-                    nextPage: "SIG",
-                    toggleFullscreen: "FULL",
-                    zoomIn: "ZOOM +",
-                    zoomOut: "ZOOM -"
-                },
-                
-                allControls: "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen",
-                hideControls: "share,download,more",
+                    setTimeout(function() {
+                        phoneDisplay.textContent = originalText;
+                        phoneDisplay.style.color = '';
+                        phoneDisplay.style.fontWeight = '400';
+                    }, COPY_FEEDBACK_DURATION);
+                }
 
-                onReady: function(scene) {
-                    var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="CONTACTO / INFO"><i class="ti-info-alt"></i></div>');
-                    infoBtn.on('click', function() { toggleInfo(); });
-                    
-                    var controls = $('.df-ui-wrapper');
-                    if(controls.length > 0) { 
-                        controls.append(infoBtn); 
+                // Método moderno: Clipboard API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(PHONE_NUMBER)
+                        .then(function() {
+                            showFeedback(true);
+                        })
+                        .catch(function(err) {
+                            console.warn('[Clipboard] Error con API moderna, intentando fallback:', err);
+                            fallbackCopy();
+                        });
+                } else {
+                    // Fallback para navegadores antiguos
+                    fallbackCopy();
+                }
+
+                function fallbackCopy() {
+                    try {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = PHONE_NUMBER;
+                        textArea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+                        textArea.setAttribute('readonly', '');
+                        textArea.setAttribute('aria-hidden', 'true');
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        textArea.setSelectionRange(0, PHONE_NUMBER.length);
+
+                        const success = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showFeedback(success);
+
+                        if (!success) {
+                            console.error('[Clipboard] execCommand falló');
+                        }
+                    } catch (err) {
+                        console.error('[Clipboard] Error en fallback:', err);
+                        showFeedback(false);
                     }
                 }
-            };
+            }
 
-            var book = $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
-        });
+            // --- 3. FUNCIONES MODAL ---
+            function openModal() {
+                lastFocusedElement = document.activeElement;
+                modal.style.display = 'flex';
+                
+                // Pequeño delay para la transición CSS
+                requestAnimationFrame(function() {
+                    modal.classList.add('show');
+                });
+
+                // Mover foco al botón de cerrar
+                setTimeout(function() {
+                    closeModalBtn.focus();
+                }, 100);
+
+                // Marcar botón info como activo
+                const btnInfo = document.getElementById('btn-info-custom');
+                if (btnInfo) {
+                    btnInfo.classList.add('info-active');
+                    btnInfo.setAttribute('aria-expanded', 'true');
+                }
+
+                // Bloquear scroll del body
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('show');
+                
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                }, 300);
+
+                // Desmarcar botón info
+                const btnInfo = document.getElementById('btn-info-custom');
+                if (btnInfo) {
+                    btnInfo.classList.remove('info-active');
+                    btnInfo.setAttribute('aria-expanded', 'false');
+                }
+
+                // Restaurar scroll del body
+                document.body.style.overflow = '';
+
+                // Devolver foco al elemento que abrió el modal
+                if (lastFocusedElement) {
+                    lastFocusedElement.focus();
+                }
+            }
+
+            function toggleInfo() {
+                if (modal.classList.contains('show')) {
+                    closeModal();
+                } else {
+                    openModal();
+                }
+            }
+
+            // Exponer toggleInfo globalmente para el botón de dFlip
+            window.toggleInfo = toggleInfo;
+
+            // --- 4. EVENT LISTENERS ---
+            
+            // Cerrar modal con botón X
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Copiar teléfono
+            phoneBtn.addEventListener('click', copyPhone);
+
+            // Cerrar modal al hacer clic fuera
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Cerrar modal con tecla Escape + Trap focus
+            document.addEventListener('keydown', function(e) {
+                if (!modal.classList.contains('show')) return;
+
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                    e.preventDefault();
+                    closeModal();
+                    return;
+                }
+
+                // Trap focus dentro del modal
+                if (e.key === 'Tab' || e.keyCode === 9) {
+                    const focusableElements = modal.querySelectorAll(
+                        'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    const firstEl = focusableElements[0];
+                    const lastEl = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstEl) {
+                            e.preventDefault();
+                            lastEl.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastEl) {
+                            e.preventDefault();
+                            firstEl.focus();
+                        }
+                    }
+                }
+            });
+
+            // --- 5. INICIAR LIBRO DFLIP ---
+            function initFlipbook() {
+                var bookOptions = {
+                    source: PDF_NAME,
+                    webgl: true,
+                    height: '100%',
+                    duration: 700,
+                    backgroundColor: 'transparent',
+                    disableFolderPath: true,
+
+                    text: {
+                        toggleSound: 'SONIDO',
+                        toggleThumbnails: 'VISTA',
+                        toggleOutline: 'INDICE',
+                        previousPage: 'ANT',
+                        nextPage: 'SIG',
+                        toggleFullscreen: 'FULL',
+                        zoomIn: 'ZOOM +',
+                        zoomOut: 'ZOOM -'
+                    },
+
+                    allControls: 'altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen',
+                    hideControls: 'share,download,more',
+
+                    onReady: function(scene) {
+                        console.log('[dFlip] Portafolio cargado correctamente');
+                        
+                        // Crear botón de info accesible
+                        var infoBtn = $('<button>', {
+                            'class': 'df-ui-btn df-ui-info',
+                            'id': 'btn-info-custom',
+                            'type': 'button',
+                            'title': 'CONTACTO / INFO',
+                            'aria-label': 'Abrir información de contacto',
+                            'aria-expanded': 'false',
+                            'aria-haspopup': 'dialog'
+                        }).html('<i class="ti-info-alt" aria-hidden="true"></i>');
+
+                        infoBtn.on('click', function() {
+                            toggleInfo();
+                        });
+
+                        // Soporte para teclado
+                        infoBtn.on('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                                e.preventDefault();
+                                toggleInfo();
+                            }
+                        });
+
+                        var controls = $('.df-ui-wrapper');
+                        if (controls.length > 0) {
+                            controls.append(infoBtn);
+                        }
+
+                        // Mejorar accesibilidad de botones existentes de dFlip
+                        $('.df-ui-btn').each(function() {
+                            var $btn = $(this);
+                            var title = $btn.attr('title') || '';
+                            if (!$btn.attr('aria-label') && title) {
+                                $btn.attr('aria-label', title);
+                            }
+                            if (!$btn.attr('role')) {
+                                $btn.attr('role', 'button');
+                            }
+                        });
+                    },
+
+                    onError: function(error) {
+                        console.error('[dFlip] Error al cargar el PDF:', error);
+                        showPdfError();
+                    }
+                };
+
+                try {
+                    var book = $('#flipbook-container').flipBook(bookOptions.source, bookOptions);
+                    
+                    // Verificar si el libro se inicializó
+                    if (!book) {
+                        console.error('[dFlip] No se pudo inicializar el libro');
+                        showPdfError();
+                    }
+                } catch (e) {
+                    console.error('[dFlip] Excepción al inicializar:', e);
+                    showPdfError();
+                }
+            }
+
+            function showPdfError() {
+                if (pdfErrorEl) {
+                    pdfErrorEl.classList.add('show');
+                }
+            }
+
+            // --- INICIALIZACIÓN ---
+            initGrained();
+
+            jQuery(document).ready(function() {
+                initFlipbook();
+            });
+
+        })();
     </script>
 </body>
 </html>
