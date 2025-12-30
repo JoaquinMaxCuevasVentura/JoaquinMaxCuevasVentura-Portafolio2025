@@ -122,7 +122,19 @@
             height: 100vh; 
             width: 100vw; 
             position: relative; 
-            z-index: 10; 
+            z-index: 10;
+            background: var(--bg-color);
+        }
+        
+        /* Asegurar que dFlip sea visible */
+        #flipbook-container ._df_book,
+        #flipbook-container .df-container,
+        #flipbook-container .df-3dcanvas {
+            background: transparent !important;
+        }
+        
+        #flipbook-container canvas {
+            display: block !important;
         }
 
         /* PANTALLA DE CARGA */
@@ -375,17 +387,17 @@
          SCRIPTS (ORDEN OPTIMIZADO)
     =============================================== -->
     
-    <!-- 1. jQuery (Versión Estable Actualizada) -->
+    <!-- 1. jQuery (Versión Estable) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
-    <!-- 2. dFlip Core (Dependencia directa de jQuery, no puede usar defer) -->
+    <!-- 2. dFlip Core -->
     <script src="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/js/dflip.min.js"></script>
     
-    <!-- 3. Librerías Auxiliares (Con defer para optimizar carga) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/grained@0.0.2/grained.min.js"></script>
-    <script defer src="https://unpkg.com/@popperjs/core@2"></script>
-    <script defer src="https://unpkg.com/tippy.js@6"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- 3. Librerías Auxiliares -->
+    <script src="https://cdn.jsdelivr.net/npm/grained@0.0.2/grained.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         // ==============================================
@@ -405,7 +417,7 @@
         // ==============================================
         // A. TEXTURA DE FONDO (Optimizado con detección avanzada)
         // ==============================================
-        function initGrainEffect() {
+        (function initGrainEffect() {
             try {
                 // Detección de dispositivo móvil
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -431,14 +443,12 @@
                         grainWidth: 1,
                         grainHeight: 1
                     });
+                    console.log('Efecto grano activado');
                 }
             } catch(e) {
                 console.info('Efecto grano desactivado:', e.message);
             }
-        }
-
-        // Esperar a que grained esté disponible (cargado con defer)
-        window.addEventListener('load', initGrainEffect);
+        })();
 
         // ==============================================
         // B. FUNCIONES DE UTILIDAD
@@ -577,6 +587,13 @@
                 webgl: true,
                 backgroundColor: "transparent",
                 pageMode: 1, // Auto (Portada simple, resto doble)
+                singlePageMode: 0,
+                autoEnableOutline: false,
+                autoEnableThumbnail: false,
+                overwritePDFOutline: false,
+                enableDownload: false,
+                enableAnnotation: false,
+                scrollWheel: true,
                 
                 // Textos localizados
                 text: { 
@@ -587,19 +604,24 @@
                 },
                 
                 // Evento: Al cargar correctamente
-                onReady: function() {
+                onReady: function(flipBook) {
+                    console.log('dFlip: PDF cargado correctamente');
                     isLoaded = true;
                     clearTimeout(loadTimeout);
-                    $('#pdf-loader').addClass('hidden');
                     
-                    // Agregar aria-labels a botones existentes de dFlip
-                    enhanceAccessibility();
-                    
-                    // Inyectar Botón Contacto
-                    injectContactButton();
+                    // Pequeño delay para asegurar renderizado completo
+                    setTimeout(function() {
+                        $('#pdf-loader').addClass('hidden');
+                        
+                        // Agregar aria-labels a botones existentes de dFlip
+                        enhanceAccessibility();
+                        
+                        // Inyectar Botón Contacto
+                        injectContactButton();
+                    }, 300);
                 },
 
-                // Evento: Error de carga (si la librería lo soporta)
+                // Evento: Error de carga
                 onError: function(error) {
                     console.error('Error al cargar PDF:', error);
                     showLoadError('Error al cargar el portafolio.');
@@ -609,18 +631,42 @@
             // Timeout de seguridad para carga
             loadTimeout = setTimeout(() => {
                 if (!isLoaded) {
+                    console.warn('Timeout de carga alcanzado');
                     showLoadError('La carga está tardando demasiado.<br>Verifica tu conexión a internet.');
                 }
             }, CONFIG.loadTimeout);
 
-            // Verificar que el contenedor existe
+            // Verificar que el contenedor existe e inicializar
             if ($("#flipbook-container").length) {
-                try {
-                    $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
-                } catch (error) {
-                    console.error('Error inicializando flipBook:', error);
-                    showLoadError('Error al inicializar el visor.');
-                }
+                // Primero verificar si el PDF existe
+                fetch(CONFIG.pdfName, { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('PDF encontrado, inicializando dFlip...');
+                            try {
+                                $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
+                            } catch (error) {
+                                console.error('Error inicializando flipBook:', error);
+                                showLoadError('Error al inicializar el visor.');
+                            }
+                        } else {
+                            console.error('PDF no encontrado:', response.status);
+                            showLoadError('El archivo del portafolio no fue encontrado.<br>Verifica que el PDF esté en la carpeta correcta.');
+                        }
+                    })
+                    .catch(error => {
+                        // Si fetch falla (CORS, etc.), intentar cargar de todas formas
+                        console.warn('No se pudo verificar el PDF, intentando cargar...', error);
+                        try {
+                            $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
+                        } catch (err) {
+                            console.error('Error inicializando flipBook:', err);
+                            showLoadError('Error al inicializar el visor.');
+                        }
+                    });
+            } else {
+                console.error('Contenedor #flipbook-container no encontrado');
+                showLoadError('Error de configuración del visor.');
             }
 
             /**
