@@ -1,828 +1,234 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOAQUIN MAX CUEVAS VENTURA | Portafolio 2025</title>
 
-  <title>JOAQUIN MAX CUEVAS VENTURA | Portafolio 2025 - Arquitectura y diseño gráfico</title>
+    <!-- 1. TIPOGRAFÍA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- ==============================================
-       SEO Y METADATOS
-  =============================================== -->
-  <meta name="description" content="Portafolio de Joaquin Max Cuevas: Arquitecto (UMSA) y Diseñador Gráfico (Atenea). Fusión de lógica espacial y comunicación visual en La Paz, Bolivia." />
-  <meta name="keywords" content="Joaquin Max, Portafolio, Arquitectura, Diseño Gráfico, Branding, La Paz, Bolivia, UMSA, Atenea, Editorial, Identidad Visual, Arquitectura Collage" />
-  <meta name="author" content="Joaquin Max Cuevas Ventura" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://joaquinmaxcuevasventura.github.io/JoaquinMaxCuevasVentura-Portafolio2025/" />
+    <!-- 2. ESTILOS DFLIP & ICONOS -->
+    <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- 3. ESTILOS DE ENRIQUECIMIENTO (Tippy + SweetAlert) -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
 
-  <!-- OPEN GRAPH (WhatsApp, LinkedIn, Facebook) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="JOAQUIN MAX CUEVAS VENTURA | Portafolio 2025" />
-  <meta property="og:description" content="Arquitectura y Diseño Gráfico. Proyectos de arquitectura, branding e identidad visual." />
-  <meta property="og:image" content="https://joaquinmaxcuevasventura.github.io/JoaquinMaxCuevasVentura-Portafolio2025/social-preview.jpg" />
-  <meta property="og:image:alt" content="Portafolio 2025 de Joaquin Max Cuevas Ventura" />
-  <meta property="og:url" content="https://joaquinmaxcuevasventura.github.io/JoaquinMaxCuevasVentura-Portafolio2025/" />
-  <meta property="og:site_name" content="Joaquin Max Cuevas Ventura Portfolio" />
-  <meta property="og:locale" content="es_BO" />
+    <style>
+        /* --- SISTEMA DE DISEÑO --- */
+        :root {
+            --bg-color: #050505;      
+            --accent-color: #dc6b2f;
+            --text-main: #FFFFFF;     
+            --ui-opacity: 0.8;
+        }
 
-  <!-- TWITTER CARDS -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="JOAQUIN MAX CUEVAS VENTURA | Portafolio 2025" />
-  <meta name="twitter:description" content="Arquitectura y Diseño Gráfico. Proyectos de arquitectura, branding e identidad visual." />
-  <meta name="twitter:image" content="https://joaquinmaxcuevasventura.github.io/JoaquinMaxCuevasVentura-Portafolio2025/social-preview.jpg" />
-  <meta name="twitter:url" content="https://joaquinmaxcuevasventura.github.io/JoaquinMaxCuevasVentura-Portafolio2025/" />
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Archivo', sans-serif !important;
+            overflow: hidden;
+        }
 
-  <!-- FAVICON (SVG inline) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23050505'/><text x='50' y='70' font-family='sans-serif' font-weight='bold' font-size='60' text-anchor='middle' fill='%23dc6b2f'>J</text></svg>">
+        /* FONDO GRANULADO */
+        #grained-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
 
-  <!-- TEMA MÓVIL -->
-  <meta name="theme-color" content="#050505" />
-  <meta name="color-scheme" content="dark" />
+        /* CONTENEDOR DEL LIBRO */
+        #flipbook-container {
+            height: 100vh; width: 100vw;
+            position: relative; z-index: 10; 
+        }
 
-  <!-- Structured Data (mínimo, seguro) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Joaquin Max Cuevas Ventura",
-    "jobTitle": ["Arquitecto", "Diseñador Gráfico"],
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "La Paz",
-      "addressCountry": "BO"
-    },
-    "url": "https://joaquinmaxcuevasventura.github.io/JoaquinMaxCuevasVentura-Portafolio2025/"
-  }
-  </script>
+        /* --- PERSONALIZACIÓN UI (Minimalismo Extremo) --- */
+        .df-ui-wrapper {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            padding-bottom: 40px !important; /* Más espacio abajo */
+        }
 
-  <!-- ==============================================
-       ESTILOS Y FUENTES
-  =============================================== -->
+        .df-ui-btn {
+            background: rgba(255,255,255,0.05) !important; /* Sutil fondo para contraste */
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            border-radius: 50% !important; /* Botones redondos para el Portafolio */
+            color: var(--text-main) !important;
+            margin: 0 6px !important;
+            width: 40px !important;
+            height: 40px !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; justify-content: center; align-items: center;
+        }
 
-  <!-- Tailwind (requisito del entorno) -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        /* Hover Naranja */
+        .df-ui-btn:hover, .df-ui-btn.active {
+            color: var(--bg-color) !important;
+            background: var(--accent-color) !important;
+            border-color: var(--accent-color) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(220, 107, 47, 0.4) !important;
+        }
 
-  <!-- Preconnect (mejora de handshakes) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preconnect" href="https://code.jquery.com" crossorigin>
+        /* Ajuste del input de página */
+        .df-ui-page input {
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-main) !important;
+            font-family: 'Archivo', sans-serif !important;
+            font-weight: 700;
+        }
+        .df-ui-page label { display: none !important; } /* Ocultar el "/" */
 
-  <!-- Tipografía Archivo -->
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        /* Ocultar elementos innecesarios */
+        .df-ui-share, .df-ui-download, .df-ui-more { display: none !important; }
 
-  <!-- dFlip (DearFlip) -->
-  <link href="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/css/dflip.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/css/themify-icons.min.css" rel="stylesheet">
+        /* --- MODAL SWEETALERT2 PERSONALIZADO --- */
+        .swal2-popup {
+            background: #111 !important;
+            border: 1px solid #333;
+            color: #fff !important;
+            font-family: 'Archivo', sans-serif !important;
+            border-radius: 0 !important; /* Bordes rectos arquitectónicos */
+        }
+        .swal2-title { color: #fff !important; font-weight: 800 !important; letter-spacing: 1px; }
+        .swal2-content { color: #aaa !important; }
+        .swal2-confirm {
+            background-color: var(--accent-color) !important;
+            border-radius: 0 !important;
+            font-weight: 600 !important;
+            box-shadow: none !important;
+        }
+        
+        /* Links en el modal de contacto */
+        .contact-link {
+            display: block; margin: 10px 0; color: #fff; text-decoration: none;
+            font-size: 16px; transition: 0.2s; border: 1px solid #333; padding: 15px;
+        }
+        .contact-link:hover { border-color: var(--accent-color); color: var(--accent-color); }
+        .contact-link i { margin-right: 10px; color: var(--accent-color); }
 
-  <!-- Tippy (animación) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/scale.css">
+        /* --- TIPPY TOOLTIP --- */
+        .tippy-box[data-theme~='custom'] {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            font-family: 'Archivo', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 2px;
+        }
+        .tippy-arrow { color: var(--accent-color); }
 
-  <!-- SweetAlert2 base CSS (se sobreescribe con tu estética) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-  <!-- Preload del PDF (mejora el tiempo al primer render) -->
-  <link rel="preload" as="fetch" href="PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf" crossorigin>
-
-  <style>
-    /* --- SISTEMA DE DISEÑO --- */
-    :root {
-      --bg-color: #050505;
-      --accent-color: #dc6b2f;
-      --text-main: #FFFFFF;
-      --ui-opacity: 0.8;
-      --transition-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      background-color: var(--bg-color);
-      font-family: 'Archivo', sans-serif !important;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Foco visible (a11y) */
-    :focus-visible {
-      outline: 2px solid rgba(220, 107, 47, 0.9);
-      outline-offset: 2px;
-    }
-
-    /* FONDO */
-    #grained-container {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* VISOR */
-    #flipbook-container {
-      height: 100vh;
-      min-height: 100vh;
-      width: 100vw;
-      position: relative;
-      display: block;
-      z-index: 10;
-    }
-
-    /* LOADER */
-    #pdf-loader {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: var(--bg-color);
-      z-index: 1000;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-
-    #pdf-loader.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .loader-spinner {
-      width: 40px;
-      height: 40px;
-      border: 2px solid rgba(255, 255, 255, 0.10);
-      border-top-color: var(--accent-color);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loader-text {
-      margin-top: 20px;
-      color: var(--text-main);
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      opacity: 0.7;
-      user-select: none;
-    }
-
-    /* OVERLAY ERROR */
-    #pdf-error {
-      position: fixed;
-      inset: 0;
-      z-index: 1100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(0, 0, 0, 0.88);
-    }
-
-    #pdf-error[aria-hidden="false"] { display: flex; }
-
-    .error-card {
-      width: min(560px, 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(5, 5, 5, 0.92);
-      padding: 22px;
-      border-radius: 0;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      backdrop-filter: blur(6px);
-    }
-
-    .error-title {
-      margin: 0 0 10px 0;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-size: 13px;
-      color: var(--text-main);
-    }
-
-    .error-body {
-      margin: 0 0 16px 0;
-      color: rgba(255,255,255,0.72);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .error-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-min {
-      appearance: none;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
-      padding: 10px 14px;
-      font-family: 'Archivo', sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.15s var(--transition-smooth), border-color 0.15s var(--transition-smooth), background 0.15s var(--transition-smooth);
-    }
-
-    .btn-min:hover {
-      transform: translateY(-2px);
-      border-color: rgba(220, 107, 47, 0.55);
-    }
-
-    .btn-min.primary {
-      background: var(--accent-color);
-      color: var(--bg-color);
-      border-color: var(--accent-color);
-    }
-
-    /* PERSONALIZACIÓN UI DFLIP */
-    .df-ui-wrapper {
-      background: transparent !important;
-      box-shadow: none !important;
-      border: none !important;
-      padding-bottom: 40px !important;
-    }
-
-    .df-ui-btn {
-      background: rgba(255,255,255,0.05) !important;
-      border: 1px solid rgba(255,255,255,0.1) !important;
-      border-radius: 50% !important;
-      color: var(--text-main) !important;
-      margin: 0 6px !important;
-      width: 40px !important;
-      height: 40px !important;
-      display: inline-flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      cursor: pointer;
-      transition: transform 0.15s var(--transition-smooth), box-shadow 0.15s var(--transition-smooth), background 0.15s var(--transition-smooth);
-    }
-
-    .df-ui-btn:hover, .df-ui-btn.active {
-      color: var(--bg-color) !important;
-      background: var(--accent-color) !important;
-      border-color: var(--accent-color) !important;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(220, 107, 47, 0.4) !important;
-    }
-
-    .df-ui-btn:focus-visible {
-      outline: 2px solid rgba(220, 107, 47, 0.9) !important;
-      outline-offset: 2px;
-    }
-
-    .df-ui-page input {
-      background: transparent !important;
-      border: none !important;
-      color: var(--text-main) !important;
-      font-family: 'Archivo', sans-serif !important;
-      font-weight: 700;
-    }
-
-    .df-ui-page label, .df-ui-share, .df-ui-download, .df-ui-more { display: none !important; }
-
-    /* SWEETALERT2 (CONTACTO) */
-    .swal2-container { font-family: 'Archivo', sans-serif !important; }
-    .swal2-popup {
-      background: #111 !important;
-      border: 1px solid #333;
-      color: #fff !important;
-      border-radius: 0 !important;
-    }
-
-    .swal2-title {
-      color: #fff !important;
-      font-weight: 800 !important;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .swal2-close {
-      color: rgba(255,255,255,0.65) !important;
-    }
-
-    .swal2-close:hover {
-      color: var(--accent-color) !important;
-    }
-
-    .contact-link {
-      appearance: none;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin: 10px 0;
-      color: #fff;
-      text-decoration: none;
-      font-size: 15px;
-      transition: all 0.2s ease;
-      border: 1px solid #333;
-      padding: 15px;
-      cursor: pointer;
-      background: transparent;
-      border-radius: 0;
-      text-align: left;
-    }
-
-    .contact-link:hover { border-color: var(--accent-color); color: var(--accent-color); }
-
-    .contact-link i {
-      margin-right: 12px;
-      color: var(--accent-color);
-      font-size: 18px;
-      flex: 0 0 auto;
-    }
-
-    .contact-link .copy-hint {
-      margin-left: auto;
-      font-size: 10px;
-      opacity: 0.4;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .contact-link.copied { border-color: #4CAF50 !important; color: #4CAF50 !important; }
-    .contact-link.copied i { color: #4CAF50 !important; }
-
-    /* TIPPY */
-    .tippy-box[data-theme~='custom'] {
-      background-color: var(--accent-color);
-      color: var(--bg-color);
-      font-family: 'Archivo', sans-serif;
-      font-weight: 700;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-radius: 2px;
-    }
-
-    .tippy-box[data-theme~='custom'] .tippy-arrow { color: var(--accent-color); }
-
-    /* Noscript */
-    .noscript {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: var(--bg-color);
-      color: rgba(255,255,255,0.85);
-      z-index: 1200;
-      font-family: 'Archivo', sans-serif;
-      text-align: center;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-  </style>
+    </style>
 </head>
 <body>
-  <!-- LOADER -->
-  <div id="pdf-loader" role="status" aria-live="polite" aria-label="Cargando portafolio">
-    <div class="loader-spinner" aria-hidden="true"></div>
-    <div class="loader-text" id="loader-text">Cargando portafolio...</div>
-  </div>
 
-  <!-- ERROR OVERLAY -->
-  <div id="pdf-error" role="alertdialog" aria-modal="true" aria-hidden="true" aria-label="Error al cargar el PDF">
-    <div class="error-card">
-      <p class="error-title">No se pudo cargar el portafolio</p>
-      <p class="error-body" id="error-message">Verifica tu conexión o intenta nuevamente.</p>
-      <div class="error-actions">
-        <button class="btn-min primary" id="btn-retry" type="button" aria-label="Reintentar cargar el PDF">Reintentar</button>
-        <a class="btn-min" id="pdf-download" href="PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf" download aria-label="Descargar el PDF del portafolio">Descargar PDF</a>
-      </div>
-    </div>
-  </div>
+    <div id="grained-container"></div>
+    <div id="flipbook-container"></div>
 
-  <!-- CONTENEDORES -->
-  <div id="grained-container" aria-hidden="true"></div>
-  <div id="flipbook-container" aria-label="Visor del portafolio"></div>
+    <!-- SCRIPTS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
+    
+    <!-- Librerías Extra -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <noscript>
-    <div class="noscript">Activa JavaScript para visualizar el portafolio.</div>
-  </noscript>
-
-  <!-- ==============================================
-       SCRIPTS (optimizados con defer + bundle cuando conviene)
-  =============================================== -->
-
-  <!-- 1) jQuery (requerido por dFlip) -->
-  <script defer src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-  <!-- 2) dFlip core -->
-  <script defer src="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/js/dflip.min.js"></script>
-
-  <!-- 3) Auxiliares -->
-  <script defer src="https://cdn.jsdelivr.net/npm/grained@0.0.2/grained.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy-bundle.umd.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-
-  <script>
-    (() => {
-      'use strict';
-
-      // --- Config ---
-      const PDF_NAME = 'PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf';
-      const CONTACT = {
-        name: 'JOAQUIN MAX CUEVAS',
-        subtitle: 'ARQUITECTURA Y DISEÑO',
-        email: 'JoACKo333@gmail.com',
-        phoneRaw: '+59178834651',
-        phoneDisplay: '+591 788 34 651',
-        location: 'La Paz, Bolivia'
-      };
-
-      const els = {
-        loader: document.getElementById('pdf-loader'),
-        loaderText: document.getElementById('loader-text'),
-        errorOverlay: document.getElementById('pdf-error'),
-        errorMessage: document.getElementById('error-message'),
-        retry: document.getElementById('btn-retry'),
-        download: document.getElementById('pdf-download'),
-        grain: document.getElementById('grained-container'),
-        flip: document.getElementById('flipbook-container')
-      };
-
-      let readyTimer = null;
-      let onReadyCalled = false;
-
-      // --- UI helpers ---
-      function setLoaderText(text) {
-        if (els.loaderText) els.loaderText.textContent = text;
-      }
-
-      function hideLoader() {
-        if (els.loader) els.loader.classList.add('hidden');
-      }
-
-      function showError(message) {
-        if (els.errorMessage) els.errorMessage.textContent = message || 'Verifica tu conexión o intenta nuevamente.';
-        if (els.errorOverlay) {
-          els.errorOverlay.setAttribute('aria-hidden', 'false');
-          // mover foco a reintentar
-          setTimeout(() => els.retry?.focus(), 0);
-        }
-        hideLoader();
-      }
-
-      function hideError() {
-        if (els.errorOverlay) els.errorOverlay.setAttribute('aria-hidden', 'true');
-      }
-
-      // --- Clipboard ---
-      async function copyText(text) {
+    <script>
+        // 1. TEXTURA DE FONDO (Igual que tus otros proyectos)
         try {
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            return true;
-          }
-          // Fallback
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.setAttribute('readonly', '');
-          ta.style.position = 'fixed';
-          ta.style.top = '-9999px';
-          ta.style.left = '-9999px';
-          document.body.appendChild(ta);
-          ta.select();
-          const ok = document.execCommand('copy');
-          document.body.removeChild(ta);
-          return ok;
-        } catch (_) {
-          return false;
-        }
-      }
-
-      function toastCopied(label) {
-        if (typeof Swal === 'undefined') return;
-        Swal.fire({
-          toast: true,
-          position: 'top',
-          showConfirmButton: false,
-          timer: 1400,
-          timerProgressBar: false,
-          background: '#111',
-          color: '#fff',
-          title: label,
-          didOpen: (toastEl) => {
-            toastEl.style.border = '1px solid #333';
-            toastEl.style.borderRadius = '0';
-          }
-        });
-      }
-
-      // --- Grain (optimizado) ---
-      function initGrain() {
-        try {
-          const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-          const lowMemory = typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 2;
-
-          // Conservador en móviles / low-end: desactivar para ahorrar CPU
-          if (prefersReducedMotion || coarsePointer || lowMemory) return;
-
-          if (typeof grained === 'undefined') return;
-
-          grained('#grained-container', {
-            animate: true,
-            patternWidth: 100,
-            patternHeight: 100,
-            grainOpacity: 0.04,
-            grainDensity: 1,
-            grainWidth: 1,
-            grainHeight: 1
-          });
-        } catch (_) {
-          // Silencioso: el grano es decorativo
-        }
-      }
-
-      // --- PDF check (manejo elegante si no existe / red) ---
-      async function checkPdfAvailable(url) {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 7000);
-
-        try {
-          // HEAD primero (liviano)
-          const head = await fetch(url, { method: 'HEAD', cache: 'no-store', signal: controller.signal });
-          if (head.ok) return true;
-
-          // Fallback: algunos servidores limitan HEAD
-          const r = await fetch(url, {
-            method: 'GET',
-            headers: { Range: 'bytes=0-0' },
-            cache: 'no-store',
-            signal: controller.signal
-          });
-          return r.ok;
-        } catch (_) {
-          return false;
-        } finally {
-          clearTimeout(timeout);
-        }
-      }
-
-      function initTooltips(contactBtnEl) {
-        if (!contactBtnEl) return;
-        if (typeof tippy === 'undefined') return;
-
-        // En touch devices, no forzar tooltip (mantener minimal)
-        const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-        if (coarsePointer) return;
-
-        tippy(contactBtnEl, {
-          theme: 'custom',
-          animation: 'scale',
-          trigger: 'mouseenter focus',
-          touch: false
-        });
-      }
-
-      function openContactModal() {
-        if (typeof Swal === 'undefined') return;
-
-        Swal.fire({
-          title: CONTACT.name,
-          html: `
-            <div style="margin-bottom:20px; font-size:12px; opacity:0.6; letter-spacing:2px; text-transform:uppercase;">${CONTACT.subtitle}</div>
-
-            <button class="contact-link" type="button" data-copy value="${CONTACT.email}" aria-label="Copiar email">
-              <i class="ti-email" aria-hidden="true"></i>
-              <span>${CONTACT.email}</span>
-              <span class="copy-hint" aria-hidden="true">COPIAR</span>
-            </button>
-
-            <button class="contact-link" type="button" data-copy value="${CONTACT.phoneRaw}" aria-label="Copiar teléfono">
-              <i class="ti-mobile" aria-hidden="true"></i>
-              <span>${CONTACT.phoneDisplay}</span>
-              <span class="copy-hint" aria-hidden="true">COPIAR</span>
-            </button>
-
-            <div style="margin-top:15px; color:#666; font-size:12px; display:flex; align-items:center; gap:8px;">
-              <i class="ti-location-pin" style="color:#dc6b2f;"></i>
-              <span>${CONTACT.location}</span>
-            </div>
-          `,
-          showConfirmButton: false,
-          showCloseButton: true,
-          background: '#050505',
-          backdrop: 'rgba(0,0,0,0.85)',
-          didOpen: () => {
-            const popup = Swal.getPopup();
-            if (!popup) return;
-
-            const buttons = popup.querySelectorAll('button[data-copy]');
-            buttons.forEach((btn) => {
-              btn.addEventListener('click', async () => {
-                const value = btn.getAttribute('value') || '';
-                const hint = btn.querySelector('.copy-hint');
-                const originalHint = hint ? hint.textContent : '';
-
-                const ok = await copyText(value);
-                if (ok) {
-                  btn.classList.add('copied');
-                  if (hint) hint.textContent = '¡COPIADO!';
-                  toastCopied('Copiado');
-                  setTimeout(() => {
-                    btn.classList.remove('copied');
-                    if (hint) hint.textContent = originalHint || 'COPIAR';
-                  }, 1400);
-                } else {
-                  toastCopied('No se pudo copiar');
-                }
-              });
+            grained('#grained-container', {
+                "animate": true, "patternWidth": 100, "patternHeight": 100,
+                "grainOpacity": 0.04, "grainDensity": 1, "grainWidth": 1, "grainHeight": 1
             });
-          }
-        });
-      }
+        } catch(e) { console.log("Error Grano"); }
 
-      function injectContactButton($) {
-        if (document.getElementById('btn-contact')) return;
+        // 2. CONFIGURACIÓN DFLIP
+        jQuery(document).ready(function() {
+            
+            // NOMBRE DEL PDF (Asegúrate que coincida)
+            var pdfName = "PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf";
 
-        const wrapper = document.querySelector('.df-ui-wrapper');
-        if (!wrapper) return;
+            var bookOptions = {
+                source: pdfName,
+                webgl: true, // Renderizado suave
+                height: "100%",
+                duration: 800, // Un poco más lento para elegancia
+                backgroundColor: "transparent",
+                
+                // Modo Automático: Detecta spreads (Portadas simples, interiores dobles)
+                pageMode: 1, 
+                singlePageMode: false, 
 
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.id = 'btn-contact';
-        btn.className = 'df-ui-btn df-ui-contact';
-        btn.setAttribute('aria-label', 'Contacto');
-        btn.setAttribute('data-tippy-content', 'Contacto');
-        btn.innerHTML = '<i class="ti-user" aria-hidden="true"></i>';
+                // Traducciones
+                text: { toggleSound: "Sonido", toggleThumbnails: "Vistas", toggleOutline: "Índice", toggleFullscreen: "Pantalla Completa" },
+                
+                // Controles visibles
+                allControls: "altPrev,pageNumber,altNext,outline,thumbnail,zoomIn,zoomOut,fullScreen,more",
+                
+                onReady: function(scene) {
+                    
+                    // A. INYECTAR BOTÓN DE CONTACTO (EL "CTA")
+                    var contactBtn = $('<div class="df-ui-btn df-ui-contact" id="btn-contact" data-tippy-content="CONTACTO"><i class="ti-user"></i></div>');
+                    $('.df-ui-wrapper').append(contactBtn);
 
-        wrapper.appendChild(btn);
+                    // B. LÓGICA DEL BOTÓN DE CONTACTO (SWEETALERT2)
+                    contactBtn.on('click', function() {
+                        Swal.fire({
+                            title: 'JOAQUIN MAX CUEVAS VENTURA',
+                            html: `
+                                <div style="margin-bottom:20px; font-size:12px; opacity:0.7">ARQUITECTURA Y DISEÑO GRÁFICO</div>
+                                <a href="mailto:JoACKo333@gmail.com" class="contact-link">
+                                    <i class="ti-email"></i> JoACKo333@gmail.com
+                                </a>
+                                <a href="tel:+59178834651" class="contact-link">
+                                    <i class="ti-mobile"></i> +591 788 34 651
+                                </a>
+                                <a href="#" class="contact-link" style="border:none; font-size:12px;">
+                                    <i class="ti-location-pin"></i> La Paz, Bolivia
+                                </a>
+                            `,
+                            showConfirmButton: false,
+                            showCloseButton: true,
+                            background: '#050505',
+                            backdrop: `rgba(0,0,0,0.8)`
+                        });
+                    });
 
-        // Tooltip
-        initTooltips(btn);
+                    // C. INICIALIZAR TOOLTIPS (TIPPY.JS)
+                    // Asignamos tooltips a los botones nativos de dFlip
+                    $('.df-ui-prev').attr('data-tippy-content', 'ANTERIOR');
+                    $('.df-ui-next').attr('data-tippy-content', 'SIGUIENTE');
+                    $('.df-ui-zoomIn').attr('data-tippy-content', 'ACERCAR');
+                    $('.df-ui-zoomOut').attr('data-tippy-content', 'ALEJAR');
+                    $('.df-ui-fit').attr('data-tippy-content', 'AJUSTAR');
+                    $('.df-ui-thumbnail').attr('data-tippy-content', 'MINIATURAS');
+                    $('.df-ui-outline').attr('data-tippy-content', 'ÍNDICE');
+                    $('.df-ui-fullscreen').attr('data-tippy-content', 'FULLSCREEN');
+                    $('.df-ui-sound').attr('data-tippy-content', 'SONIDO');
 
-        // Click + teclado
-        btn.addEventListener('click', openContactModal);
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openContactModal();
-          }
-        });
-      }
-
-      function supportsWebGL() {
-        try {
-          const canvas = document.createElement('canvas');
-          const hasCtx = !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-          return hasCtx;
-        } catch (_) {
-          return false;
-        }
-      }
-
-      function initFlipbook() {
-        if (typeof jQuery === 'undefined') {
-          showError('Error interno: jQuery no está disponible.');
-          return;
-        }
-        if (typeof jQuery.fn.flipBook === 'undefined') {
-          showError('Error interno: dFlip no está disponible.');
-          return;
-        }
-
-        const $ = jQuery;
-        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-        // En touch/coarse o reduce-motion: modo compatible por defecto (evita pantallas negras por GPU)
-        const initialWebgl = supportsWebGL() && !prefersReducedMotion && !coarsePointer;
-        let attempts = 0;
-
-        const baseOptions = {
-          source: PDF_NAME,
-          height: '100%',
-          backgroundColor: 'transparent',
-          pageMode: 1,
-          text: {
-            toggleSound: 'Sonido',
-            toggleThumbnails: 'Vistas',
-            toggleOutline: 'Índice',
-            toggleFullscreen: 'Full'
-          }
-        };
-
-        const mount = (useWebgl) => {
-          attempts += 1;
-          onReadyCalled = false;
-          if (readyTimer) clearTimeout(readyTimer);
-
-          // Limpia el contenedor para evitar estados rotos entre intentos
-          try { els.flip.innerHTML = ''; } catch (_) {}
-
-          // Asegura capas correctas en reintentos
-          hideError();
-          if (els.loader) els.loader.classList.remove('hidden');
-
-          // Microcopy: si cae a modo compatible
-          if (attempts > 1) setLoaderText('Renderizando (modo compatible)...');
-
-          const options = {
-            ...baseOptions,
-            webgl: !!useWebgl,
-            onReady: function () {
-              onReadyCalled = true;
-              if (readyTimer) clearTimeout(readyTimer);
-              hideLoader();
-              injectContactButton($);
-
-              // Watchdog visual: si "está listo" pero no hay canvas/tamaño, reintenta sin WebGL
-              setTimeout(() => {
-                const canvas = els.flip?.querySelector('canvas');
-                const invalidCanvas = !canvas || canvas.width === 0 || canvas.height === 0;
-                if (invalidCanvas && useWebgl && attempts < 2) {
-                  // reintento compatible
-                  if (els.loader) els.loader.classList.remove('hidden');
-                  setLoaderText('Renderizando (modo compatible)...');
-                  mount(false);
+                    // Activar Tippy
+                    tippy('[data-tippy-content]', {
+                        theme: 'custom',
+                        animation: 'scale',
+                        touch: false, // No mostrar en móviles para no estorbar
+                        placement: 'top'
+                    });
                 }
-              }, 900);
-            }
-          };
+            };
 
-          // Failsafe: si dFlip no dispara onReady / queda en negro
-          readyTimer = setTimeout(() => {
-            if (!onReadyCalled) {
-              if (useWebgl && attempts < 2) {
-                // Fallback: WebGL suele ser el culpable del "pantallazo negro" en algunos devices
-                mount(false);
-              } else {
-                showError('El PDF no respondió a tiempo. Puedes reintentar o descargarlo.');
-              }
-            }
-          }, useWebgl ? 12000 : 15000);
-
-          try {
-            $('#flipbook-container').flipBook(options.source, options);
-          } catch (_) {
-            if (useWebgl && attempts < 2) {
-              mount(false);
-            } else {
-              if (readyTimer) clearTimeout(readyTimer);
-              showError('Ocurrió un error al inicializar el visor.');
-            }
-          }
-        };
-
-        mount(initialWebgl);
-      }
-
-      // Captura de errores generales: degradar a UX elegante
-      function initGlobalErrorHandling() {
-        window.addEventListener('unhandledrejection', (e) => {
-          // Evitar ruido: sólo si aún está cargando
-          if (!onReadyCalled && els.loader && !els.loader.classList.contains('hidden')) {
-            showError('Hubo un problema cargando el portafolio.');
-          }
+            var book = $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
         });
+    </script>
 
-        window.addEventListener('error', () => {
-          if (!onReadyCalled && els.loader && !els.loader.classList.contains('hidden')) {
-            showError('Hubo un problema cargando el portafolio.');
-          }
-        });
-      }
-
-      document.addEventListener('DOMContentLoaded', async () => {
-        initGlobalErrorHandling();
-        initGrain();
-
-        els.download?.setAttribute('href', PDF_NAME);
-
-        hideError();
-        setLoaderText('Cargando portafolio...');
-
-        // Verificación previa para evitar consola roja y dar fallback elegante
-        const ok = await checkPdfAvailable(PDF_NAME);
-        if (!ok) {
-          showError('No se encontró el archivo PDF o no se pudo acceder.');
-          return;
-        }
-
-        initFlipbook();
-      });
-
-      els.retry?.addEventListener('click', () => {
-        hideError();
-        // Reinicia estado
-        onReadyCalled = false;
-        if (readyTimer) clearTimeout(readyTimer);
-        // Recarga dura para limpiar estado interno de dFlip
-        window.location.reload();
-      });
-
-    })();
-  </script>
 </body>
 </html>
