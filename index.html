@@ -82,7 +82,8 @@
         /* Interacción (Naranja) - Solo hover y clases activas */
         .df-ui-btn:hover,
         .df-ui-btn.active,
-        .df-ui-btn.info-active {
+        .df-ui-btn.info-active,
+        .df-ui-btn.lang-active {
             color: var(--accent-color) !important;
             background: transparent !important;
             opacity: 1 !important;
@@ -130,6 +131,34 @@
         .df-ui-btn.df-ui-prev,
         .df-ui-btn.df-ui-next {
             margin: 0 2px !important;
+        }
+
+        /* --- BOTÓN DE IDIOMA PERSONALIZADO --- */
+        .df-ui-lang {
+            font-family: 'Archivo', sans-serif !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            letter-spacing: 1px !important;
+            padding: 4px 8px !important;
+            min-width: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .df-ui-lang .lang-text {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* Separador visual sutil antes del botón de idioma */
+        .df-ui-separator {
+            width: 1px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.15);
+            margin: 0 12px !important;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         /* --- GESTIÓN DE HIPERVÍNCULOS --- */
@@ -309,6 +338,43 @@
             display: block;
         }
 
+        /* --- INDICADOR DE CARGA AL CAMBIAR IDIOMA --- */
+        .lang-loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent-color);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .lang-loading.show {
+            opacity: 1;
+        }
+
+        .lang-loading::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid transparent;
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            margin-left: 10px;
+            vertical-align: middle;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* --- RESPONSIVE: MÓVILES ESTRECHOS --- */
         @media screen and (max-width: 380px) {
             .modal-content {
@@ -348,6 +414,15 @@
             .modal-contact {
                 gap: 14px;
                 padding-top: 20px;
+            }
+
+            .df-ui-lang {
+                font-size: 10px !important;
+                padding: 3px 6px !important;
+            }
+
+            .df-ui-separator {
+                margin: 0 8px !important;
             }
         }
 
@@ -416,15 +491,20 @@
 </head>
 <body>
     <!-- Skip link para navegación por teclado -->
-    <a href="#flipbook-container" class="sr-only">Saltar al portafolio</a>
+    <a href="#flipbook-container" class="sr-only" id="skip-link">Saltar al portafolio</a>
 
     <!-- FONDO -->
     <div id="grained-container" aria-hidden="true"></div>
 
+    <!-- INDICADOR DE CARGA DE IDIOMA -->
+    <div id="lang-loading" class="lang-loading" aria-hidden="true">
+        <span id="lang-loading-text">Cargando</span>
+    </div>
+
     <!-- MENSAJE DE ERROR PDF -->
     <div id="pdf-error" class="pdf-error-message" role="alert" aria-live="polite">
-        <p>No se pudo cargar el documento.</p>
-        <p>Por favor, recarga la página.</p>
+        <p id="error-line1">No se pudo cargar el documento.</p>
+        <p id="error-line2">Por favor, recarga la página.</p>
     </div>
 
     <!-- MODAL INFO -->
@@ -450,16 +530,17 @@
             <div class="modal-line" aria-hidden="true"></div>
             
             <div id="modal-description" class="modal-body">
-                <p>Arquitectura y diseño gráfico</p>
+                <p id="modal-profession">Arquitectura y diseño gráfico</p>
                 
                 <div class="modal-contact" role="group" aria-label="Información de contacto">
                     <!-- EMAIL -->
                     <a 
                         href="mailto:JoACKo333@gmail.com" 
                         class="contact-link" 
+                        id="email-link"
                         aria-label="Enviar correo electrónico a JoACKo333@gmail.com"
                     >
-                        CORREO
+                        <span id="email-label">CORREO</span>
                         <span>JoACKo333@gmail.com</span>
                     </a>
 
@@ -470,12 +551,12 @@
                         id="phone-btn"
                         aria-label="Copiar número de teléfono al portapapeles"
                     >
-                        TELÉFONO / WHATSAPP
+                        <span id="phone-label">TELÉFONO / WHATSAPP</span>
                         <span id="phone-display">+591 78834651</span>
                     </button>
 
                     <!-- UBICACIÓN -->
-                    <div class="contact-link" aria-disabled="true" role="text">
+                    <div class="contact-link" aria-disabled="true" role="text" id="location-text">
                         La Paz, Bolivia
                     </div>
                 </div>
@@ -497,8 +578,92 @@
 
             // --- CONSTANTES ---
             const PHONE_NUMBER = '+591 78834651';
-            const PDF_NAME = 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01.pdf';
             const COPY_FEEDBACK_DURATION = 2000;
+            const STORAGE_KEY = 'portfolio_language';
+
+            // --- CONFIGURACIÓN DE IDIOMAS ---
+            const LANGUAGES = {
+                es: {
+                    code: 'es',
+                    label: 'ES',
+                    pdf: 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_ES.pdf',
+                    htmlLang: 'es',
+                    
+                    // Textos de UI
+                    skipLink: 'Saltar al portafolio',
+                    loadingText: 'Cargando',
+                    errorLine1: 'No se pudo cargar el documento.',
+                    errorLine2: 'Por favor, recarga la página.',
+                    
+                    // Modal
+                    closeModal: 'Cerrar ventana de información',
+                    profession: 'Arquitectura y diseño gráfico',
+                    emailLabel: 'CORREO',
+                    phoneLabel: 'TELÉFONO / WHATSAPP',
+                    phoneCopied: '¡NÚMERO COPIADO!',
+                    phoneCopyError: '¡ERROR AL COPIAR!',
+                    
+                    // dFlip controles
+                    dflip: {
+                        toggleSound: 'SONIDO',
+                        toggleThumbnails: 'VISTA',
+                        toggleOutline: 'ÍNDICE',
+                        previousPage: 'ANT',
+                        nextPage: 'SIG',
+                        toggleFullscreen: 'FULL',
+                        zoomIn: 'ZOOM +',
+                        zoomOut: 'ZOOM -'
+                    },
+                    
+                    // Botones personalizados
+                    infoBtn: 'CONTACTO / INFO',
+                    infoBtnAria: 'Abrir información de contacto',
+                    langBtn: 'Cambiar a inglés',
+                    langBtnAria: 'Cambiar idioma del portafolio a inglés'
+                },
+                en: {
+                    code: 'en',
+                    label: 'EN',
+                    pdf: 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_EN.pdf',
+                    htmlLang: 'en',
+                    
+                    // Textos de UI
+                    skipLink: 'Skip to portfolio',
+                    loadingText: 'Loading',
+                    errorLine1: 'Could not load the document.',
+                    errorLine2: 'Please reload the page.',
+                    
+                    // Modal
+                    closeModal: 'Close information window',
+                    profession: 'Architecture and graphic design',
+                    emailLabel: 'EMAIL',
+                    phoneLabel: 'PHONE / WHATSAPP',
+                    phoneCopied: 'NUMBER COPIED!',
+                    phoneCopyError: 'COPY ERROR!',
+                    
+                    // dFlip controles
+                    dflip: {
+                        toggleSound: 'SOUND',
+                        toggleThumbnails: 'VIEW',
+                        toggleOutline: 'INDEX',
+                        previousPage: 'PREV',
+                        nextPage: 'NEXT',
+                        toggleFullscreen: 'FULL',
+                        zoomIn: 'ZOOM +',
+                        zoomOut: 'ZOOM -'
+                    },
+                    
+                    // Botones personalizados
+                    infoBtn: 'CONTACT / INFO',
+                    infoBtnAria: 'Open contact information',
+                    langBtn: 'Switch to Spanish',
+                    langBtnAria: 'Switch portfolio language to Spanish'
+                }
+            };
+
+            // --- ESTADO DE LA APLICACIÓN ---
+            let currentLang = getSavedLanguage();
+            let flipbookInstance = null;
 
             // --- ELEMENTOS DEL DOM ---
             const modal = document.getElementById('infoModal');
@@ -506,9 +671,150 @@
             const phoneBtn = document.getElementById('phone-btn');
             const phoneDisplay = document.getElementById('phone-display');
             const pdfErrorEl = document.getElementById('pdf-error');
+            const langLoadingEl = document.getElementById('lang-loading');
 
             // Variable para guardar el elemento que abrió el modal
             let lastFocusedElement = null;
+
+            // --- FUNCIONES DE IDIOMA ---
+            function getSavedLanguage() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved && LANGUAGES[saved]) {
+                        return saved;
+                    }
+                } catch (e) {
+                    console.warn('[Language] No se pudo acceder a localStorage:', e.message);
+                }
+                
+                // Detectar idioma del navegador como fallback
+                const browserLang = navigator.language || navigator.userLanguage || 'es';
+                return browserLang.startsWith('en') ? 'en' : 'es';
+            }
+
+            function saveLanguage(lang) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, lang);
+                } catch (e) {
+                    console.warn('[Language] No se pudo guardar en localStorage:', e.message);
+                }
+            }
+
+            function getTranslation() {
+                return LANGUAGES[currentLang];
+            }
+
+            function getOppositeLanguage() {
+                return currentLang === 'es' ? 'en' : 'es';
+            }
+
+            function updateUITexts() {
+                const t = getTranslation();
+                
+                // Actualizar atributo lang del HTML
+                document.documentElement.lang = t.htmlLang;
+                
+                // Skip link
+                const skipLink = document.getElementById('skip-link');
+                if (skipLink) skipLink.textContent = t.skipLink;
+                
+                // Loading
+                const loadingText = document.getElementById('lang-loading-text');
+                if (loadingText) loadingText.textContent = t.loadingText;
+                
+                // Error messages
+                const errorLine1 = document.getElementById('error-line1');
+                const errorLine2 = document.getElementById('error-line2');
+                if (errorLine1) errorLine1.textContent = t.errorLine1;
+                if (errorLine2) errorLine2.textContent = t.errorLine2;
+                
+                // Modal
+                if (closeModalBtn) closeModalBtn.setAttribute('aria-label', t.closeModal);
+                
+                const profession = document.getElementById('modal-profession');
+                if (profession) profession.textContent = t.profession;
+                
+                const emailLabel = document.getElementById('email-label');
+                if (emailLabel) emailLabel.textContent = t.emailLabel;
+                
+                const phoneLabel = document.getElementById('phone-label');
+                if (phoneLabel) phoneLabel.textContent = t.phoneLabel;
+                
+                // Actualizar botón de idioma si existe
+                updateLangButton();
+                
+                // Actualizar botón de info si existe
+                updateInfoButton();
+            }
+
+            function updateLangButton() {
+                const langBtn = document.getElementById('btn-lang-custom');
+                if (langBtn) {
+                    const opposite = LANGUAGES[getOppositeLanguage()];
+                    const current = getTranslation();
+                    langBtn.querySelector('.lang-text').textContent = opposite.label;
+                    langBtn.setAttribute('title', current.langBtn);
+                    langBtn.setAttribute('aria-label', current.langBtnAria);
+                }
+            }
+
+            function updateInfoButton() {
+                const infoBtn = document.getElementById('btn-info-custom');
+                if (infoBtn) {
+                    const t = getTranslation();
+                    infoBtn.setAttribute('title', t.infoBtn);
+                    infoBtn.setAttribute('aria-label', t.infoBtnAria);
+                }
+            }
+
+            function showLoadingIndicator() {
+                if (langLoadingEl) {
+                    langLoadingEl.classList.add('show');
+                }
+            }
+
+            function hideLoadingIndicator() {
+                if (langLoadingEl) {
+                    langLoadingEl.classList.remove('show');
+                }
+            }
+
+            function switchLanguage() {
+                const newLang = getOppositeLanguage();
+                currentLang = newLang;
+                saveLanguage(newLang);
+                
+                // Mostrar indicador de carga
+                showLoadingIndicator();
+                
+                // Actualizar textos de UI
+                updateUITexts();
+                
+                // Recargar el flipbook con el nuevo PDF
+                reloadFlipbook();
+            }
+
+            function reloadFlipbook() {
+                const container = $('#flipbook-container');
+                
+                // Destruir instancia anterior si existe
+                if (flipbookInstance) {
+                    try {
+                        // dFlip no tiene un método destroy oficial, así que limpiamos el contenedor
+                        container.empty();
+                    } catch (e) {
+                        console.warn('[dFlip] Error al limpiar:', e.message);
+                    }
+                }
+                
+                // Pequeño delay para asegurar que el DOM esté limpio
+                setTimeout(function() {
+                    initFlipbook();
+                }, 100);
+            }
+
+            // Exponer switchLanguage globalmente
+            window.switchLanguage = switchLanguage;
 
             // --- 1. INICIAR GRAINED (TEXTURA DE FONDO) ---
             function initGrained() {
@@ -531,10 +837,11 @@
 
             // --- 2. FUNCIÓN COPIAR TELÉFONO (CON FALLBACK) ---
             function copyPhone() {
+                const t = getTranslation();
                 const originalText = phoneDisplay.textContent;
 
                 function showFeedback(success) {
-                    phoneDisplay.textContent = success ? '¡NÚMERO COPIADO!' : '¡ERROR AL COPIAR!';
+                    phoneDisplay.textContent = success ? t.phoneCopied : t.phoneCopyError;
                     phoneDisplay.style.color = success ? 'var(--accent-color)' : '#ff4444';
                     phoneDisplay.style.fontWeight = '600';
 
@@ -631,7 +938,6 @@
                 document.body.style.overflow = '';
 
                 // No devolver el foco al botón de info para evitar el estado hover persistente
-                // El foco se pierde naturalmente al cerrar el modal
                 lastFocusedElement = null;
             }
 
@@ -695,38 +1001,33 @@
 
             // --- 5. INICIAR LIBRO DFLIP ---
             function initFlipbook() {
+                const t = getTranslation();
+                
                 var bookOptions = {
-                    source: PDF_NAME,
+                    source: t.pdf,
                     webgl: true,
                     height: '100%',
                     duration: 700,
                     backgroundColor: 'transparent',
                     disableFolderPath: true,
 
-                    text: {
-                        toggleSound: 'SONIDO',
-                        toggleThumbnails: 'VISTA',
-                        toggleOutline: 'INDICE',
-                        previousPage: 'ANT',
-                        nextPage: 'SIG',
-                        toggleFullscreen: 'FULL',
-                        zoomIn: 'ZOOM +',
-                        zoomOut: 'ZOOM -'
-                    },
+                    text: t.dflip,
 
                     allControls: 'altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen',
                     hideControls: 'share,download,more',
 
                     onReady: function(scene) {
-                        console.log('[dFlip] Portafolio cargado correctamente');
+                        console.log('[dFlip] Portafolio cargado correctamente - Idioma:', currentLang);
+                        
+                        hideLoadingIndicator();
                         
                         // Crear botón de info accesible
                         var infoBtn = $('<button>', {
                             'class': 'df-ui-btn df-ui-info',
                             'id': 'btn-info-custom',
                             'type': 'button',
-                            'title': 'CONTACTO / INFO',
-                            'aria-label': 'Abrir información de contacto',
+                            'title': t.infoBtn,
+                            'aria-label': t.infoBtnAria,
                             'aria-expanded': 'false',
                             'aria-haspopup': 'dialog'
                         }).html('<i class="ti-info-alt" aria-hidden="true"></i>');
@@ -743,9 +1044,39 @@
                             }
                         });
 
+                        // Crear separador visual
+                        var separator = $('<span>', {
+                            'class': 'df-ui-separator',
+                            'aria-hidden': 'true'
+                        });
+
+                        // Crear botón de idioma
+                        var oppositeLang = LANGUAGES[getOppositeLanguage()];
+                        var langBtn = $('<button>', {
+                            'class': 'df-ui-btn df-ui-lang',
+                            'id': 'btn-lang-custom',
+                            'type': 'button',
+                            'title': t.langBtn,
+                            'aria-label': t.langBtnAria
+                        }).html('<span class="lang-text">' + oppositeLang.label + '</span>');
+
+                        langBtn.on('click', function() {
+                            switchLanguage();
+                        });
+
+                        // Soporte para teclado
+                        langBtn.on('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                                e.preventDefault();
+                                switchLanguage();
+                            }
+                        });
+
                         var controls = $('.df-ui-wrapper');
                         if (controls.length > 0) {
                             controls.append(infoBtn);
+                            controls.append(separator);
+                            controls.append(langBtn);
                         }
 
                         // Mejorar accesibilidad de botones existentes de dFlip
@@ -763,20 +1094,22 @@
 
                     onError: function(error) {
                         console.error('[dFlip] Error al cargar el PDF:', error);
+                        hideLoadingIndicator();
                         showPdfError();
                     }
                 };
 
                 try {
-                    var book = $('#flipbook-container').flipBook(bookOptions.source, bookOptions);
+                    flipbookInstance = $('#flipbook-container').flipBook(bookOptions.source, bookOptions);
                     
                     // Verificar si el libro se inicializó
-                    if (!book) {
+                    if (!flipbookInstance) {
                         console.error('[dFlip] No se pudo inicializar el libro');
                         showPdfError();
                     }
                 } catch (e) {
                     console.error('[dFlip] Excepción al inicializar:', e);
+                    hideLoadingIndicator();
                     showPdfError();
                 }
             }
@@ -789,6 +1122,7 @@
 
             // --- INICIALIZACIÓN ---
             initGrained();
+            updateUITexts(); // Aplicar idioma inicial a UI
 
             jQuery(document).ready(function() {
                 initFlipbook();
