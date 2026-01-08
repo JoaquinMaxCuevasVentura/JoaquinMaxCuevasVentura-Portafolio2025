@@ -957,7 +957,22 @@
                 }
               });
 
-              const $controls = $('.df-ui-wrapper');
+              // dFlip puede crear 2 barras: arriba (vacía/invisible) y abajo (activa).
+              // Insertamos SOLO en la barra activa (la que contiene "next").
+              let $controls = $('.df-ui-wrapper')
+                .filter(function () {
+                  return (
+                    $(this).find('.df-ui-next, .df-ui-altNext, .df-ui-btn.df-ui-next, .df-ui-btn.df-ui-altNext')
+                      .length > 0
+                  );
+                })
+                .first();
+
+              // Fallback: usar la última barra (normalmente la inferior)
+              if ($controls.length === 0) {
+                $controls = $('.df-ui-wrapper').last();
+              }
+
               if ($controls.length > 0) {
                 $controls.append(infoBtn);
               }
@@ -966,10 +981,23 @@
               applyI18n(currentLang);
             }
 
-            // Selector ES/EN (alineado en la misma barra)
-            const $controls = $('.df-ui-wrapper');
-            if ($controls.length > 0) {
-              buildLangControls($controls);
+            // Selector ES/EN (alineado en la misma barra) — solo en la barra activa
+            let $controlsLang = $('.df-ui-wrapper')
+              .filter(function () {
+                return (
+                  $(this).find('.df-ui-next, .df-ui-altNext, .df-ui-btn.df-ui-next, .df-ui-btn.df-ui-altNext')
+                    .length > 0
+                );
+              })
+              .first();
+
+            // Fallback: si dFlip cambia clases internamente, usar la última barra (suele ser la inferior)
+            if ($controlsLang.length === 0) {
+              $controlsLang = $('.df-ui-wrapper').last();
+            }
+
+            if ($controlsLang.length > 0) {
+              buildLangControls($controlsLang);
             }
 
             // Accesibilidad básica para botones dFlip
