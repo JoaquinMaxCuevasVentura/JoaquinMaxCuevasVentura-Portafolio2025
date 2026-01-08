@@ -58,13 +58,6 @@
       width: 100vw;
       position: relative;
       z-index: 10;
-      overflow: hidden;
-    }
-
-    /* Asegurar que el contenedor de dFlip no cause overflow */
-    .df-container {
-      max-width: 100vw !important;
-      overflow-x: hidden !important;
     }
 
     /* --- INTERFAZ MINIMALISTA --- */
@@ -72,23 +65,26 @@
       background: transparent !important;
       box-shadow: none !important;
       border: none !important;
-      padding: 10px 8px 30px 8px !important;
+      padding-bottom: 30px !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       flex-wrap: nowrap !important;
       gap: 0 !important;
-      max-width: 100vw !important;
+      max-width: 100% !important;
       overflow-x: auto !important;
-      overflow-y: visible !important;
+      overflow-y: hidden !important;
       -webkit-overflow-scrolling: touch !important;
-      scrollbar-width: none !important;
-      -ms-overflow-style: none !important;
-      min-height: 50px !important;
+      white-space: nowrap !important;
     }
-
-    .df-ui-wrapper::-webkit-scrollbar {
-      display: none !important;
+    
+    /* Asegurar que TODOS los botones sean visibles */
+    .df-ui-wrapper .df-ui-btn,
+    .df-ui-wrapper .df-ui-page,
+    .df-ui-wrapper .df-ui-langgroup {
+      display: inline-flex !important;
+      visibility: visible !important;
+      opacity: var(--ui-opacity) !important;
     }
 
     .df-ui-btn {
@@ -98,18 +94,13 @@
       color: var(--text-main) !important;
       border-radius: 0 !important;
       margin: 0 8px !important;
-      padding: 8px 4px !important;
       transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
       opacity: var(--ui-opacity);
       width: auto !important;
       height: auto !important;
-      min-height: 32px !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      font-size: 13px !important;
-      flex-shrink: 0 !important;
-      line-height: 1.2 !important;
     }
 
     .df-ui-btn:hover,
@@ -196,6 +187,71 @@
       opacity: 0 !important;
       background: transparent !important;
       cursor: pointer !important;
+    }
+    
+    /* --- FORZAR VISIBILIDAD DE TODOS LOS CONTROLES --- */
+    .df-ui-btn.df-ui-prev,
+    .df-ui-btn.df-ui-next,
+    .df-ui-btn.df-ui-altPrev,
+    .df-ui-btn.df-ui-altNext,
+    .df-ui-btn.df-ui-play,
+    .df-ui-btn.df-ui-outline,
+    .df-ui-btn.df-ui-thumbnail,
+    .df-ui-btn.df-ui-zoomIn,
+    .df-ui-btn.df-ui-zoomOut,
+    .df-ui-btn.df-ui-fullScreen,
+    .df-ui-btn.df-ui-info,
+    .df-ui-page,
+    .df-ui-langgroup {
+      display: inline-flex !important;
+      visibility: visible !important;
+    }
+    
+    /* Prevenir que dFlip oculte controles en responsive */
+    .df-ui-wrapper > * {
+      flex-shrink: 0 !important;
+    }
+    
+    /* Scroll horizontal suave para la barra de controles */
+    .df-ui-wrapper::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .df-ui-wrapper::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    
+    .df-ui-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(220, 107, 47, 0.3);
+      border-radius: 3px;
+    }
+    
+    .df-ui-wrapper::-webkit-scrollbar-thumb:hover {
+      background: rgba(220, 107, 47, 0.5);
+    }
+    
+    /* Indicador visual sutil de scroll en móvil */
+    @media screen and (max-width: 768px) {
+      .df-ui-wrapper::before,
+      .df-ui-wrapper::after {
+        content: '';
+        position: sticky;
+        z-index: 1;
+        width: 30px;
+        height: 100%;
+        pointer-events: none;
+      }
+      
+      .df-ui-wrapper::before {
+        left: 0;
+        background: linear-gradient(to right, var(--bg-color) 0%, transparent 100%);
+      }
+      
+      .df-ui-wrapper::after {
+        right: 0;
+        background: linear-gradient(to left, var(--bg-color) 0%, transparent 100%);
+      }
     }
 
     /* --- VENTANA MODAL INFO --- */
@@ -376,81 +432,8 @@
       display: block;
     }
 
-    /* Responsive: tablets y móviles grandes */
-    @media screen and (max-width: 640px) {
-      .df-ui-wrapper {
-        padding: 8px 4px 25px 4px !important;
-        min-height: 45px !important;
-      }
-
-      .df-ui-btn {
-        margin: 0 4px !important;
-        padding: 6px 3px !important;
-        font-size: 11px !important;
-        min-height: 28px !important;
-      }
-
-      .df-ui-btn i {
-        font-size: 14px !important;
-      }
-
-      .df-ui-page input {
-        width: 36px !important;
-        font-size: 11px !important;
-      }
-
-      .df-ui-langbtn {
-        font-size: 10px !important;
-        letter-spacing: 1.5px !important;
-      }
-
-      .df-ui-langgroup {
-        margin-left: 3px !important;
-      }
-
-      .df-ui-langsep {
-        margin: 0 1px !important;
-      }
-    }
-
     /* Responsive: móviles estrechos */
     @media screen and (max-width: 380px) {
-      .df-ui-wrapper {
-        padding: 6px 3px 20px 3px !important;
-        min-height: 42px !important;
-      }
-
-      .df-ui-btn {
-        margin: 0 3px !important;
-        padding: 5px 2px !important;
-        font-size: 10px !important;
-        min-height: 26px !important;
-      }
-
-      .df-ui-btn i {
-        font-size: 13px !important;
-      }
-
-      .df-ui-page input {
-        width: 32px !important;
-        font-size: 10px !important;
-      }
-
-      .df-ui-langbtn {
-        font-size: 9px !important;
-        letter-spacing: 1px !important;
-        margin: 0 1px !important;
-      }
-
-      .df-ui-langgroup {
-        margin-left: 2px !important;
-      }
-
-      .df-ui-langsep {
-        margin: 0 1px !important;
-        font-size: 9px !important;
-      }
-
       .modal-content {
         width: 92%;
         padding: 15px;
@@ -489,41 +472,76 @@
         gap: 14px;
         padding-top: 20px;
       }
-    }
-
-    /* Responsive: móviles muy pequeños */
-    @media screen and (max-width: 320px) {
-      .df-ui-wrapper {
-        padding: 5px 2px 18px 2px !important;
-        min-height: 40px !important;
-      }
-
-      .df-ui-btn {
-        margin: 0 2px !important;
-        padding: 4px 2px !important;
-        font-size: 9px !important;
-        min-height: 24px !important;
-      }
-
-      .df-ui-btn i {
-        font-size: 12px !important;
-      }
-
-      .df-ui-page input {
-        width: 28px !important;
-        font-size: 9px !important;
-      }
 
       .df-ui-langbtn {
-        font-size: 8px !important;
-        letter-spacing: 0.5px !important;
+        font-size: 11px;
+        letter-spacing: 1.5px;
       }
+      
+      /* Ajustar controles para móvil */
+      .df-ui-wrapper {
+        padding-bottom: 20px !important;
+        gap: 0 4px !important;
+      }
+      
+      .df-ui-btn {
+        font-size: 10px !important;
+        margin: 0 2px !important;
+        padding: 4px 6px !important;
+      }
+      
+      .df-ui-btn i {
+        font-size: 14px !important;
+      }
+    }
 
+    /* Tablets y móviles medianos */
+    @media screen and (max-width: 768px) {
+      .df-ui-wrapper {
+        padding-bottom: 25px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        justify-content: flex-start !important;
+      }
+      
+      .df-ui-btn {
+        margin: 0 4px !important;
+        font-size: 11px !important;
+      }
+      
+      .df-ui-page input {
+        width: 35px !important;
+        font-size: 11px !important;
+      }
+    }
+
+    /* Móviles pequeños - ajustes adicionales */
+    @media screen and (max-width: 480px) {
+      .df-ui-wrapper {
+        justify-content: flex-start !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+      }
+      
+      .df-ui-btn {
+        font-size: 10px !important;
+        margin: 0 3px !important;
+        min-width: auto !important;
+      }
+      
+      .df-ui-langbtn {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        padding: 4px !important;
+      }
+      
       .df-ui-langsep {
-        font-size: 8px !important;
-        margin: 0 !important;
+        font-size: 10px;
+        margin: 0 1px;
       }
+    }
 
+    @media screen and (max-width: 320px) {
       .modal-content {
         width: 95%;
         padding: 12px;
@@ -536,9 +554,12 @@
       .contact-value {
         font-size: 11px;
       }
+
+      .df-ui-langbtn {
+        font-size: 10px;
+      }
     }
 
-    /* Responsive: pantallas cortas */
     @media screen and (max-height: 500px) {
       .modal-content {
         max-height: 85vh;
@@ -1105,6 +1126,38 @@
           hideControls: 'share,download,more',
 
           onReady: function () {
+            // Forzar visibilidad de todos los controles
+            setTimeout(function() {
+              // Remover cualquier estilo inline que oculte controles
+              $('.df-ui-btn, .df-ui-page').each(function() {
+                $(this).css({
+                  'display': '',
+                  'visibility': ''
+                }).removeAttr('style').show();
+              });
+              
+              // Forzar clases para todos los botones
+              $('.df-ui-btn').addClass('df-ui-btn').css('display', 'inline-flex');
+              
+              // Asegurar que el wrapper sea scrolleable si es necesario
+              $('.df-ui-wrapper').css({
+                'overflow-x': 'auto',
+                'overflow-y': 'hidden',
+                '-webkit-overflow-scrolling': 'touch',
+                'flex-wrap': 'nowrap',
+                'white-space': 'nowrap'
+              });
+            }, 100);
+            
+            // Verificación adicional después de un tiempo
+            setTimeout(function() {
+              $('.df-ui-btn, .df-ui-page, .df-ui-langgroup').each(function() {
+                if ($(this).css('display') === 'none') {
+                  $(this).css('display', 'inline-flex');
+                }
+              });
+            }, 500);
+
             const existingInfoBtn = document.getElementById('btn-info-custom');
             if (!existingInfoBtn) {
               const infoBtn = $('<button>', {
