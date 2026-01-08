@@ -6,7 +6,7 @@
     <meta name="description" content="Portafolio profesional de Joaquín Max Cuevas Ventura - Arquitectura y Diseño Gráfico">
     <title>PORTAFOLIO 2026 | Joaquin Max Cuevas Ventura</title>
 
-    <!-- 1. FUENTE ARCHIVO -->
+    <!-- 1. FUENTE ARCHIVO (Preconnect + Preload optimizado) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -24,20 +24,37 @@
             --ui-opacity: 0.7;
         }
 
-        *, *::before, *::after { box-sizing: border-box; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
 
         body, html {
-            height: 100%; margin: 0; background-color: var(--bg-color);
-            font-family: 'Archivo', sans-serif; overflow: hidden;
+            height: 100%;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Archivo', sans-serif;
+            overflow: hidden;
         }
 
+        /* Capa de Ruido */
         #grained-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; 
+            pointer-events: none;
         }
 
+        /* Capa del Libro */
         #flipbook-container {
-            height: 100vh; width: 100vw; position: relative; z-index: 10; 
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            z-index: 10; 
         }
 
         /* --- INTERFAZ MINIMALISTA --- */
@@ -48,6 +65,7 @@
             padding-bottom: 30px !important;
         }
 
+        /* Botones Limpios */
         .df-ui-btn {
             background: transparent !important;
             border: none !important;
@@ -55,34 +73,17 @@
             color: var(--text-main) !important;
             border-radius: 0 !important;
             margin: 0 8px !important;
-            transition: all 0.2s ease;
+            transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
             opacity: var(--ui-opacity);
             width: auto !important;
             height: auto !important;
         }
 
-        /* Estilos específicos para botones de texto (Idiomas) */
-        .df-ui-btn.lang-btn {
-            font-family: 'Archivo', sans-serif;
-            font-weight: 700;
-            font-size: 12px;
-            letter-spacing: 1px;
-            padding: 0 4px !important;
-            line-height: 30px; /* Igualar altura de iconos */
-        }
-
-        /* Separador vertical entre idiomas */
-        .lang-separator {
-            display: inline-block;
-            width: 1px;
-            height: 14px;
-            background-color: var(--text-main);
-            opacity: 0.3;
-            margin: 0 2px;
-            vertical-align: middle;
-        }
-
-        .df-ui-btn:hover, .df-ui-btn.active, .df-ui-btn.info-active {
+        /* Interacción (Naranja) - Solo hover y clases activas */
+        .df-ui-btn:hover,
+        .df-ui-btn.active,
+        .df-ui-btn.info-active,
+        .df-ui-btn.lang-active {
             color: var(--accent-color) !important;
             background: transparent !important;
             opacity: 1 !important;
@@ -90,102 +91,434 @@
             text-shadow: 0 0 10px rgba(220, 107, 47, 0.5);
         }
 
-        /* Estado activo fijo para el idioma seleccionado */
-        .df-ui-btn.lang-active {
-            color: var(--accent-color) !important;
-            opacity: 1 !important;
-            cursor: default;
-            transform: scale(1.1); /* Ligeramente más grande pero fijo */
+        /* Focus visible para accesibilidad (solo navegación por teclado) */
+        .df-ui-btn:focus {
+            outline: none;
         }
 
         .df-ui-btn:focus-visible {
             color: var(--accent-color) !important;
             opacity: 1 !important;
+            transform: scale(1.3);
+            text-shadow: 0 0 10px rgba(220, 107, 47, 0.5);
             outline: 2px solid var(--accent-color);
             outline-offset: 4px;
         }
 
-        /* Corrección del input de página */
+        /* --- SELECTOR DE IDIOMA --- */
+        .lang-selector {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 8px !important;
+            gap: 0;
+        }
+
+        .lang-separator {
+            color: var(--text-main);
+            opacity: 0.4;
+            font-size: 12px;
+            font-weight: 300;
+            margin: 0 2px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .df-ui-btn.lang-btn {
+            font-family: 'Archivo', sans-serif !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            letter-spacing: 1px !important;
+            padding: 4px 6px !important;
+            margin: 0 2px !important;
+            min-width: auto !important;
+        }
+
+        .df-ui-btn.lang-btn.lang-active {
+            transform: scale(1.2);
+        }
+
+        .df-ui-btn.lang-btn:hover:not(.lang-active) {
+            transform: scale(1.15);
+        }
+
+        /* Corrección del Folio */
+        .df-ui-page {
+            width: auto !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
         .df-ui-page input {
-            background: transparent !important; border: none !important;
-            color: var(--text-main) !important; font-family: 'Archivo', sans-serif !important;
+            width: 40px !important;
+            text-align: center !important;
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-main) !important;
+            font-family: 'Archivo', sans-serif !important;
+            font-size: 12px !important;
+            padding: 0 !important;
+            height: 30px !important;
+            box-shadow: none !important;
+        }
+
+        .df-ui-btn.df-ui-prev,
+        .df-ui-btn.df-ui-next {
+            margin: 0 2px !important;
+        }
+
+        /* --- GESTIÓN DE HIPERVÍNCULOS --- */
+        .df-page-content .df-link,
+        .df-page-content a { 
+            opacity: 0 !important; 
+            background: transparent !important; 
+            cursor: pointer !important;
         }
 
         /* --- VENTANA MODAL INFO --- */
         .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.96); z-index: 9999;
-            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96); 
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .modal-overlay.show { display: flex; opacity: 1; }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
 
         .modal-content {
-            color: #fff; max-width: 500px; width: 85%; text-align: center;
-            position: relative; max-height: 90vh; overflow-y: auto; padding: 20px;
+            color: #fff;
+            max-width: 500px;
+            width: 85%;
+            text-align: center;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
         }
 
-        .modal-line { width: 40px; height: 2px; background-color: var(--accent-color); margin: 20px auto; }
-        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; line-height: 1.2; }
-        .modal-subtitle { font-size: 11px; color: var(--accent-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-        .modal-body { font-size: 14px; color: #ccc; line-height: 1.6; font-weight: 300; }
-        .modal-contact { margin-top: 30px; border-top: 1px solid #222; padding-top: 25px; display: flex; flex-direction: column; gap: 18px; }
+        .modal-line {
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+            margin: 20px auto;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
 
+        .modal-subtitle {
+            font-size: 11px;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        
+        .modal-contact {
+            margin-top: 30px;
+            border-top: 1px solid #222;
+            padding-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* --- ESTILOS DE CONTACTO --- */
         .contact-link {
-            color: #666; text-decoration: none; font-size: 11px; letter-spacing: 2px;
-            text-transform: uppercase; transition: color 0.2s ease; cursor: pointer;
-            padding: 8px 4px; border: none; background: transparent; display: block; width: 100%;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            cursor: pointer;
+            padding: 8px 4px;
+            border: none;
+            background: transparent;
+            display: block;
+            width: 100%;
         }
+        
         .contact-link span {
-            display: block; color: #fff; font-weight: 400; font-size: 14px;
-            letter-spacing: 0.5px; margin-top: 4px; transition: color 0.2s ease;
+            display: block;
+            color: #fff;
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+            transition: color 0.2s ease;
+            word-break: break-word;
         }
-        .contact-link:hover, .contact-link:focus, .contact-link:hover span { color: var(--accent-color); }
-        
-        .close-modal {
-            position: absolute; top: -50px; right: 0; color: #666; font-size: 30px;
-            cursor: pointer; transition: color 0.2s ease; background: transparent; border: none;
-        }
-        .close-modal:hover { color: var(--accent-color); }
-        
-        .ti-info-custom::before { content: "\e645"; }
 
-        /* Media Queries (Mantener las originales) */
-        @media screen and (max-width: 380px) {
-            .modal-content { width: 92%; }
-            .close-modal { top: -40px; right: -5px; }
+        .contact-link:hover,
+        .contact-link:focus {
+            color: var(--accent-color);
+            outline: none;
         }
-        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+        .contact-link:hover span,
+        .contact-link:focus span {
+            color: var(--accent-color);
+        }
+
+        .contact-link:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
+        .contact-link[aria-disabled="true"] {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: #666;
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            font-weight: 100;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            line-height: 1;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: var(--accent-color);
+            outline: none;
+        }
+
+        .close-modal:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+        
+        .ti-info-custom::before {
+            content: "\e645";
+        }
+
+        /* --- PANTALLA DE ERROR PDF --- */
+        .pdf-error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 1px;
+            z-index: 5;
+            display: none;
+        }
+
+        .pdf-error-message.show {
+            display: block;
+        }
+
+        /* --- RESPONSIVE: MÓVILES ESTRECHOS --- */
+        @media screen and (max-width: 380px) {
+            .modal-content {
+                width: 92%;
+                padding: 15px;
+            }
+
+            .modal-title {
+                font-size: 16px;
+                letter-spacing: 1px;
+            }
+
+            .modal-subtitle {
+                font-size: 10px;
+                margin-bottom: 20px;
+            }
+
+            .modal-body {
+                font-size: 13px;
+            }
+
+            .contact-link {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+            }
+
+            .contact-link span {
+                font-size: 12px;
+            }
+
+            .close-modal {
+                top: -40px;
+                right: -5px;
+                font-size: 26px;
+            }
+
+            .modal-contact {
+                gap: 14px;
+                padding-top: 20px;
+            }
+
+            .df-ui-btn.lang-btn {
+                font-size: 11px !important;
+                padding: 3px 4px !important;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            .modal-content {
+                width: 95%;
+                padding: 12px;
+            }
+
+            .modal-title {
+                font-size: 14px;
+            }
+
+            .contact-link span {
+                font-size: 11px;
+            }
+        }
+
+        /* Asegurar visibilidad en landscape móvil */
+        @media screen and (max-height: 500px) {
+            .modal-content {
+                max-height: 85vh;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .modal-subtitle {
+                margin-bottom: 15px;
+            }
+
+            .close-modal {
+                top: -35px;
+            }
+        }
+
+        /* Skip link para accesibilidad */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .sr-only:focus {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: auto;
+            height: auto;
+            padding: 10px 20px;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+            background: var(--accent-color);
+            color: #fff;
+            z-index: 99999;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <a href="#flipbook-container" class="sr-only">Saltar al portafolio</a>
+    <!-- Skip link para navegación por teclado -->
+    <a href="#flipbook-container" class="sr-only" id="skip-link">Saltar al portafolio</a>
+
+    <!-- FONDO -->
     <div id="grained-container" aria-hidden="true"></div>
 
-    <!-- MODAL INFO (Con IDs añadidos para traducción) -->
-    <div id="infoModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <!-- MENSAJE DE ERROR PDF -->
+    <div id="pdf-error" class="pdf-error-message" role="alert" aria-live="polite">
+        <p id="error-line1">No se pudo cargar el documento.</p>
+        <p id="error-line2">Por favor, recarga la página.</p>
+    </div>
+
+    <!-- MODAL INFO -->
+    <div 
+        id="infoModal" 
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+    >
         <div class="modal-content">
-            <button type="button" class="close-modal" id="close-modal-btn">&times;</button>
+            <button 
+                type="button"
+                class="close-modal" 
+                id="close-modal-btn"
+                aria-label="Cerrar ventana de información"
+            >&times;</button>
             
             <h1 id="modal-title" class="modal-title">JOAQUIN MAX<br>CUEVAS VENTURA</h1>
-            <p id="modal-subtitle" class="modal-subtitle">PORTAFOLIO 2026</p>
+            <p class="modal-subtitle">PORTAFOLIO 2026</p>
             
             <div class="modal-line" aria-hidden="true"></div>
             
-            <div class="modal-body">
-                <p id="modal-desc">Arquitectura y diseño gráfico</p>
+            <div id="modal-description" class="modal-body">
+                <p id="modal-profession">Arquitectura y diseño gráfico</p>
                 
-                <div class="modal-contact">
-                    <a href="mailto:JoACKo333@gmail.com" class="contact-link">
-                        <span id="lbl-email-title" style="font-size:11px; color:#666; text-transform:uppercase;">CORREO</span>
+                <div class="modal-contact" role="group" id="contact-group" aria-label="Información de contacto">
+                    <!-- EMAIL -->
+                    <a 
+                        href="mailto:JoACKo333@gmail.com" 
+                        class="contact-link" 
+                        id="email-link"
+                        aria-label="Enviar correo electrónico a JoACKo333@gmail.com"
+                    >
+                        <span class="contact-label" id="email-label">CORREO</span>
                         <span>JoACKo333@gmail.com</span>
                     </a>
 
-                    <button type="button" class="contact-link" id="phone-btn">
-                        <span id="lbl-phone-title" style="font-size:11px; color:#666; text-transform:uppercase;">TELÉFONO / WHATSAPP</span>
+                    <!-- TELÉFONO -->
+                    <button 
+                        type="button"
+                        class="contact-link" 
+                        id="phone-btn"
+                        aria-label="Copiar número de teléfono al portapapeles"
+                    >
+                        <span class="contact-label" id="phone-label">TELÉFONO / WHATSAPP</span>
                         <span id="phone-display">+591 78834651</span>
                     </button>
 
-                    <div class="contact-link" aria-disabled="true" role="text">
+                    <!-- UBICACIÓN -->
+                    <div class="contact-link" aria-disabled="true" role="text" id="location-text">
                         La Paz, Bolivia
                     </div>
                 </div>
@@ -193,8 +526,10 @@
         </div>
     </div>
 
-    <main id="flipbook-container"></main>
+    <!-- LIBRO -->
+    <main id="flipbook-container" role="main" aria-label="Visualizador de portafolio interactivo"></main>
 
+    <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
@@ -203,172 +538,530 @@
         (function() {
             'use strict';
 
-            // --- 1. CONFIGURACIÓN DE IDIOMA ---
-            // Detectar idioma desde la URL (?lang=en o ?lang=es)
-            const urlParams = new URLSearchParams(window.location.search);
-            // Si no hay param, por defecto es 'es'
-            const currentLang = urlParams.get('lang') === 'en' ? 'en' : 'es';
+            // --- CONSTANTES ---
+            const PHONE_NUMBER = '+591 78834651';
+            const COPY_FEEDBACK_DURATION = 2000;
 
-            // Diccionario de datos y traducciones
-            const DATA = {
+            // --- CONFIGURACIÓN DE IDIOMAS ---
+            const LANGUAGES = {
                 es: {
-                    pdf: 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_ES.pdf', // Nombre archivo Español
-                    ui: {
-                        toggleSound: 'SONIDO', toggleThumbnails: 'VISTA', toggleOutline: 'INDICE',
-                        previousPage: 'ANT', nextPage: 'SIG', toggleFullscreen: 'FULL',
-                        zoomIn: 'ZOOM +', zoomOut: 'ZOOM -', infoTitle: 'CONTACTO / INFO'
-                    },
-                    modal: {
-                        subtitle: 'PORTAFOLIO 2026',
-                        desc: 'Arquitectura y diseño gráfico',
-                        lblEmail: 'CORREO',
-                        lblPhone: 'TELÉFONO / WHATSAPP'
+                    pdf: 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_ES.pdf',
+                    htmlLang: 'es',
+                    skipLink: 'Saltar al portafolio',
+                    errorLine1: 'No se pudo cargar el documento.',
+                    errorLine2: 'Por favor, recarga la página.',
+                    closeModal: 'Cerrar ventana de información',
+                    profession: 'Arquitectura y diseño gráfico',
+                    contactGroup: 'Información de contacto',
+                    emailLabel: 'CORREO',
+                    emailAria: 'Enviar correo electrónico a JoACKo333@gmail.com',
+                    phoneLabel: 'TELÉFONO / WHATSAPP',
+                    phoneAria: 'Copiar número de teléfono al portapapeles',
+                    phoneCopied: '¡NÚMERO COPIADO!',
+                    phoneCopyError: '¡ERROR AL COPIAR!',
+                    location: 'La Paz, Bolivia',
+                    flipbookAria: 'Visualizador de portafolio interactivo',
+                    infoBtn: 'Abrir información de contacto',
+                    infoBtnTitle: 'CONTACTO / INFO',
+                    langBtnEs: 'Cambiar a español',
+                    langBtnEn: 'Cambiar a inglés',
+                    text: {
+                        toggleSound: 'SONIDO',
+                        toggleThumbnails: 'VISTA',
+                        toggleOutline: 'INDICE',
+                        previousPage: 'ANT',
+                        nextPage: 'SIG',
+                        toggleFullscreen: 'FULL',
+                        zoomIn: 'ZOOM +',
+                        zoomOut: 'ZOOM -'
                     }
                 },
                 en: {
-                    pdf: 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_EN.pdf', // Nombre archivo Inglés
-                    ui: {
-                        toggleSound: 'SOUND', toggleThumbnails: 'VIEW', toggleOutline: 'INDEX',
-                        previousPage: 'PREV', nextPage: 'NEXT', toggleFullscreen: 'FULL',
-                        zoomIn: 'ZOOM +', zoomOut: 'ZOOM -', infoTitle: 'CONTACT / INFO'
-                    },
-                    modal: {
-                        subtitle: 'PORTFOLIO 2026',
-                        desc: 'Architecture and Graphic Design',
-                        lblEmail: 'EMAIL',
-                        lblPhone: 'PHONE / WHATSAPP'
+                    pdf: 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_EN.pdf',
+                    htmlLang: 'en',
+                    skipLink: 'Skip to portfolio',
+                    errorLine1: 'Could not load the document.',
+                    errorLine2: 'Please reload the page.',
+                    closeModal: 'Close information window',
+                    profession: 'Architecture and graphic design',
+                    contactGroup: 'Contact information',
+                    emailLabel: 'EMAIL',
+                    emailAria: 'Send email to JoACKo333@gmail.com',
+                    phoneLabel: 'PHONE / WHATSAPP',
+                    phoneAria: 'Copy phone number to clipboard',
+                    phoneCopied: 'NUMBER COPIED!',
+                    phoneCopyError: 'COPY ERROR!',
+                    location: 'La Paz, Bolivia',
+                    flipbookAria: 'Interactive portfolio viewer',
+                    infoBtn: 'Open contact information',
+                    infoBtnTitle: 'CONTACT / INFO',
+                    langBtnEs: 'Switch to Spanish',
+                    langBtnEn: 'Switch to English',
+                    text: {
+                        toggleSound: 'SOUND',
+                        toggleThumbnails: 'VIEW',
+                        toggleOutline: 'INDEX',
+                        previousPage: 'PREV',
+                        nextPage: 'NEXT',
+                        toggleFullscreen: 'FULL',
+                        zoomIn: 'ZOOM +',
+                        zoomOut: 'ZOOM -'
                     }
                 }
             };
 
-            // Seleccionar datos según idioma actual
-            const CONTENT = DATA[currentLang];
-            const PHONE_NUMBER = '+591 78834651';
+            // --- ESTADO ACTUAL ---
+            let currentLang = localStorage.getItem('portfolioLang') || 'es';
+            let flipbookInstance = null;
 
-            // --- 2. ACTUALIZAR DOM ESTÁTICO (TEXTOS MODAL) ---
-            function updateLanguageTexts() {
-                document.documentElement.lang = currentLang;
-                document.getElementById('modal-subtitle').textContent = CONTENT.modal.subtitle;
-                document.getElementById('modal-desc').textContent = CONTENT.modal.desc;
-                document.getElementById('lbl-email-title').textContent = CONTENT.modal.lblEmail;
-                document.getElementById('lbl-phone-title').textContent = CONTENT.modal.lblPhone;
-            }
+            // --- ELEMENTOS DEL DOM ---
+            const modal = document.getElementById('infoModal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const phoneBtn = document.getElementById('phone-btn');
+            const phoneDisplay = document.getElementById('phone-display');
+            const pdfErrorEl = document.getElementById('pdf-error');
 
-            // --- 3. FUNCIONES AUXILIARES (Grained, Copiar, Modal) ---
+            // Variable para guardar el elemento que abrió el modal
+            let lastFocusedElement = null;
+
+            // --- 1. INICIAR GRAINED (TEXTURA DE FONDO) ---
             function initGrained() {
                 try {
                     if (typeof grained === 'function') {
                         grained('#grained-container', {
-                            animate: true, patternWidth: 100, patternHeight: 100,
-                            grainOpacity: 0.05, grainDensity: 1
+                            animate: true,
+                            patternWidth: 100,
+                            patternHeight: 100,
+                            grainOpacity: 0.05,
+                            grainDensity: 1,
+                            grainWidth: 1,
+                            grainHeight: 1
                         });
                     }
-                } catch (e) { console.warn('Grained error:', e); }
+                } catch (e) {
+                    console.warn('[Grained] No se pudo inicializar la textura de fondo:', e.message);
+                }
             }
 
-            const modal = document.getElementById('infoModal');
-            const phoneDisplay = document.getElementById('phone-display');
-
+            // --- 2. FUNCIÓN COPIAR TELÉFONO (CON FALLBACK) ---
             function copyPhone() {
+                const lang = LANGUAGES[currentLang];
                 const originalText = phoneDisplay.textContent;
-                const successText = currentLang === 'en' ? 'COPIED!' : '¡COPIADO!';
-                
-                navigator.clipboard.writeText(PHONE_NUMBER).then(() => {
-                    phoneDisplay.textContent = successText;
-                    phoneDisplay.style.color = 'var(--accent-color)';
-                    setTimeout(() => {
+
+                function showFeedback(success) {
+                    phoneDisplay.textContent = success ? lang.phoneCopied : lang.phoneCopyError;
+                    phoneDisplay.style.color = success ? 'var(--accent-color)' : '#ff4444';
+                    phoneDisplay.style.fontWeight = '600';
+
+                    setTimeout(function() {
                         phoneDisplay.textContent = originalText;
                         phoneDisplay.style.color = '';
-                    }, 2000);
-                }).catch(err => console.error('Copy failed', err));
+                        phoneDisplay.style.fontWeight = '400';
+                    }, COPY_FEEDBACK_DURATION);
+                }
+
+                // Método moderno: Clipboard API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(PHONE_NUMBER)
+                        .then(function() {
+                            showFeedback(true);
+                        })
+                        .catch(function(err) {
+                            console.warn('[Clipboard] Error con API moderna, intentando fallback:', err);
+                            fallbackCopy();
+                        });
+                } else {
+                    // Fallback para navegadores antiguos
+                    fallbackCopy();
+                }
+
+                function fallbackCopy() {
+                    try {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = PHONE_NUMBER;
+                        textArea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+                        textArea.setAttribute('readonly', '');
+                        textArea.setAttribute('aria-hidden', 'true');
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        textArea.setSelectionRange(0, PHONE_NUMBER.length);
+
+                        const success = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showFeedback(success);
+
+                        if (!success) {
+                            console.error('[Clipboard] execCommand falló');
+                        }
+                    } catch (err) {
+                        console.error('[Clipboard] Error en fallback:', err);
+                        showFeedback(false);
+                    }
+                }
             }
 
-            function toggleInfo() {
-                modal.classList.contains('show') ? closeModal() : openModal();
-            }
-            window.toggleInfo = toggleInfo; // Global para dFlip
-
+            // --- 3. FUNCIONES MODAL ---
             function openModal() {
+                lastFocusedElement = document.activeElement;
                 modal.style.display = 'flex';
-                requestAnimationFrame(() => modal.classList.add('show'));
+                
+                // Pequeño delay para la transición CSS
+                requestAnimationFrame(function() {
+                    modal.classList.add('show');
+                });
+
+                // Mover foco al botón de cerrar
+                setTimeout(function() {
+                    closeModalBtn.focus();
+                }, 100);
+
+                // Marcar botón info como activo
+                const btnInfo = document.getElementById('btn-info-custom');
+                if (btnInfo) {
+                    btnInfo.classList.add('info-active');
+                    btnInfo.setAttribute('aria-expanded', 'true');
+                }
+
+                // Bloquear scroll del body
                 document.body.style.overflow = 'hidden';
             }
 
             function closeModal() {
                 modal.classList.remove('show');
-                setTimeout(() => modal.style.display = 'none', 300);
+                
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                }, 300);
+
+                // Desmarcar botón info
+                const btnInfo = document.getElementById('btn-info-custom');
+                if (btnInfo) {
+                    btnInfo.classList.remove('info-active');
+                    btnInfo.setAttribute('aria-expanded', 'false');
+                    btnInfo.blur();
+                }
+
+                // Restaurar scroll del body
                 document.body.style.overflow = '';
+
+                lastFocusedElement = null;
             }
 
-            // Listeners
-            document.getElementById('close-modal-btn').addEventListener('click', closeModal);
-            document.getElementById('phone-btn').addEventListener('click', copyPhone);
-            modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+            function toggleInfo() {
+                if (modal.classList.contains('show')) {
+                    closeModal();
+                } else {
+                    openModal();
+                }
+            }
 
-            // --- 4. INICIAR LIBRO DFLIP ---
+            // Exponer toggleInfo globalmente para el botón de dFlip
+            window.toggleInfo = toggleInfo;
+
+            // --- 4. FUNCIONES DE IDIOMA ---
+            function updateUILanguage() {
+                const lang = LANGUAGES[currentLang];
+
+                // Actualizar atributo lang del HTML
+                document.documentElement.lang = lang.htmlLang;
+
+                // Skip link
+                const skipLink = document.getElementById('skip-link');
+                if (skipLink) skipLink.textContent = lang.skipLink;
+
+                // Mensajes de error
+                document.getElementById('error-line1').textContent = lang.errorLine1;
+                document.getElementById('error-line2').textContent = lang.errorLine2;
+
+                // Modal
+                closeModalBtn.setAttribute('aria-label', lang.closeModal);
+                document.getElementById('modal-profession').textContent = lang.profession;
+                document.getElementById('contact-group').setAttribute('aria-label', lang.contactGroup);
+                
+                // Email
+                const emailLink = document.getElementById('email-link');
+                emailLink.setAttribute('aria-label', lang.emailAria);
+                document.getElementById('email-label').textContent = lang.emailLabel;
+
+                // Teléfono
+                phoneBtn.setAttribute('aria-label', lang.phoneAria);
+                document.getElementById('phone-label').textContent = lang.phoneLabel;
+
+                // Ubicación
+                document.getElementById('location-text').textContent = lang.location;
+
+                // Flipbook container
+                document.getElementById('flipbook-container').setAttribute('aria-label', lang.flipbookAria);
+
+                // Actualizar botones de idioma
+                updateLangButtons();
+            }
+
+            function updateLangButtons() {
+                const btnEs = document.getElementById('btn-lang-es');
+                const btnEn = document.getElementById('btn-lang-en');
+
+                if (btnEs && btnEn) {
+                    const lang = LANGUAGES[currentLang];
+                    
+                    btnEs.setAttribute('aria-label', lang.langBtnEs);
+                    btnEn.setAttribute('aria-label', lang.langBtnEn);
+
+                    if (currentLang === 'es') {
+                        btnEs.classList.add('lang-active');
+                        btnEs.setAttribute('aria-pressed', 'true');
+                        btnEn.classList.remove('lang-active');
+                        btnEn.setAttribute('aria-pressed', 'false');
+                    } else {
+                        btnEn.classList.add('lang-active');
+                        btnEn.setAttribute('aria-pressed', 'true');
+                        btnEs.classList.remove('lang-active');
+                        btnEs.setAttribute('aria-pressed', 'false');
+                    }
+                }
+
+                // Actualizar botón de info
+                const btnInfo = document.getElementById('btn-info-custom');
+                if (btnInfo) {
+                    const lang = LANGUAGES[currentLang];
+                    btnInfo.setAttribute('aria-label', lang.infoBtn);
+                    btnInfo.setAttribute('title', lang.infoBtnTitle);
+                }
+            }
+
+            function switchLanguage(newLang) {
+                if (newLang === currentLang) return;
+
+                currentLang = newLang;
+                localStorage.setItem('portfolioLang', newLang);
+
+                // Actualizar UI
+                updateUILanguage();
+
+                // Recargar el flipbook con el nuevo PDF
+                reloadFlipbook();
+            }
+
+            function reloadFlipbook() {
+                const container = document.getElementById('flipbook-container');
+                const lang = LANGUAGES[currentLang];
+
+                // Limpiar el contenedor
+                $(container).empty();
+
+                // Ocultar mensaje de error si estaba visible
+                if (pdfErrorEl) {
+                    pdfErrorEl.classList.remove('show');
+                }
+
+                // Reinicializar el flipbook
+                initFlipbook();
+            }
+
+            // Exponer switchLanguage globalmente
+            window.switchLanguage = switchLanguage;
+
+            // --- 5. EVENT LISTENERS ---
+            
+            // Cerrar modal con botón X
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Copiar teléfono
+            phoneBtn.addEventListener('click', copyPhone);
+
+            // Cerrar modal al hacer clic fuera
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Cerrar modal con tecla Escape + Trap focus
+            document.addEventListener('keydown', function(e) {
+                if (!modal.classList.contains('show')) return;
+
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                    e.preventDefault();
+                    closeModal();
+                    return;
+                }
+
+                // Trap focus dentro del modal
+                if (e.key === 'Tab' || e.keyCode === 9) {
+                    const focusableElements = modal.querySelectorAll(
+                        'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    const firstEl = focusableElements[0];
+                    const lastEl = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstEl) {
+                            e.preventDefault();
+                            lastEl.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastEl) {
+                            e.preventDefault();
+                            firstEl.focus();
+                        }
+                    }
+                }
+            });
+
+            // --- 6. INICIAR LIBRO DFLIP ---
             function initFlipbook() {
+                const lang = LANGUAGES[currentLang];
+
                 var bookOptions = {
-                    source: CONTENT.pdf, // Carga PDF dinámicamente
+                    source: lang.pdf,
                     webgl: true,
                     height: '100%',
                     duration: 700,
                     backgroundColor: 'transparent',
                     disableFolderPath: true,
-                    text: CONTENT.ui, // Carga traducciones UI
+
+                    text: lang.text,
+
                     allControls: 'altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen',
                     hideControls: 'share,download,more',
 
                     onReady: function(scene) {
-                        // A) Botón Info
-                        var infoBtn = $('<button>', {
-                            'class': 'df-ui-btn df-ui-info',
-                            'title': CONTENT.ui.infoTitle,
-                            'type': 'button'
-                        }).html('<i class="ti-info-alt"></i>').on('click', toggleInfo);
-
-                        // B) Botones Idioma (ES | EN)
-                        var langContainer = $('<div>', {
-                            'style': 'display:inline-block; margin-left:10px; vertical-align:middle;'
+                        console.log('[dFlip] Portafolio cargado correctamente (' + currentLang.toUpperCase() + ')');
+                        
+                        // Crear selector de idioma
+                        var langSelector = $('<div>', {
+                            'class': 'lang-selector',
+                            'role': 'group',
+                            'aria-label': 'Language selector'
                         });
 
                         // Botón ES
-                        var btnES = $('<button>', {
-                            'class': 'df-ui-btn lang-btn ' + (currentLang === 'es' ? 'lang-active' : ''),
-                            'text': 'ES',
-                            'title': 'Español'
-                        }).on('click', function() {
-                            if (currentLang !== 'es') window.location.search = '?lang=es';
-                        });
+                        var btnEs = $('<button>', {
+                            'class': 'df-ui-btn lang-btn' + (currentLang === 'es' ? ' lang-active' : ''),
+                            'id': 'btn-lang-es',
+                            'type': 'button',
+                            'title': 'Español',
+                            'aria-label': lang.langBtnEs,
+                            'aria-pressed': currentLang === 'es' ? 'true' : 'false'
+                        }).text('ES');
 
                         // Separador
-                        var sep = $('<span>', { 'class': 'lang-separator' });
+                        var separator = $('<span>', {
+                            'class': 'lang-separator',
+                            'aria-hidden': 'true'
+                        }).text('/');
 
                         // Botón EN
-                        var btnEN = $('<button>', {
-                            'class': 'df-ui-btn lang-btn ' + (currentLang === 'en' ? 'lang-active' : ''),
-                            'text': 'EN',
-                            'title': 'English'
-                        }).on('click', function() {
-                            if (currentLang !== 'en') window.location.search = '?lang=en';
+                        var btnEn = $('<button>', {
+                            'class': 'df-ui-btn lang-btn' + (currentLang === 'en' ? ' lang-active' : ''),
+                            'id': 'btn-lang-en',
+                            'type': 'button',
+                            'title': 'English',
+                            'aria-label': lang.langBtnEn,
+                            'aria-pressed': currentLang === 'en' ? 'true' : 'false'
+                        }).text('EN');
+
+                        // Event listeners para botones de idioma
+                        btnEs.on('click', function() {
+                            switchLanguage('es');
                         });
 
-                        // Insertar en la barra
+                        btnEn.on('click', function() {
+                            switchLanguage('en');
+                        });
+
+                        // Soporte para teclado
+                        btnEs.on('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                                e.preventDefault();
+                                switchLanguage('es');
+                            }
+                        });
+
+                        btnEn.on('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                                e.preventDefault();
+                                switchLanguage('en');
+                            }
+                        });
+
+                        langSelector.append(btnEs, separator, btnEn);
+
+                        // Crear botón de info accesible
+                        var infoBtn = $('<button>', {
+                            'class': 'df-ui-btn df-ui-info',
+                            'id': 'btn-info-custom',
+                            'type': 'button',
+                            'title': lang.infoBtnTitle,
+                            'aria-label': lang.infoBtn,
+                            'aria-expanded': 'false',
+                            'aria-haspopup': 'dialog'
+                        }).html('<i class="ti-info-alt" aria-hidden="true"></i>');
+
+                        infoBtn.on('click', function() {
+                            toggleInfo();
+                        });
+
+                        // Soporte para teclado
+                        infoBtn.on('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                                e.preventDefault();
+                                toggleInfo();
+                            }
+                        });
+
                         var controls = $('.df-ui-wrapper');
-                        controls.append(infoBtn);
-                        
-                        // Añadimos el grupo de idiomas al final
-                        langContainer.append(btnES, sep, btnEN);
-                        controls.append(langContainer);
+                        if (controls.length > 0) {
+                            controls.append(langSelector);
+                            controls.append(infoBtn);
+                        }
+
+                        // Mejorar accesibilidad de botones existentes de dFlip
+                        $('.df-ui-btn').each(function() {
+                            var $btn = $(this);
+                            var title = $btn.attr('title') || '';
+                            if (!$btn.attr('aria-label') && title) {
+                                $btn.attr('aria-label', title);
+                            }
+                            if (!$btn.attr('role')) {
+                                $btn.attr('role', 'button');
+                            }
+                        });
+                    },
+
+                    onError: function(error) {
+                        console.error('[dFlip] Error al cargar el PDF:', error);
+                        showPdfError();
                     }
                 };
 
-                $('#flipbook-container').flipBook(bookOptions.source, bookOptions);
+                try {
+                    flipbookInstance = $('#flipbook-container').flipBook(bookOptions.source, bookOptions);
+                    
+                    // Verificar si el libro se inicializó
+                    if (!flipbookInstance) {
+                        console.error('[dFlip] No se pudo inicializar el libro');
+                        showPdfError();
+                    }
+                } catch (e) {
+                    console.error('[dFlip] Excepción al inicializar:', e);
+                    showPdfError();
+                }
             }
 
-            // Ejecución inicial
+            function showPdfError() {
+                if (pdfErrorEl) {
+                    pdfErrorEl.classList.add('show');
+                }
+            }
+
+            // --- INICIALIZACIÓN ---
             initGrained();
-            updateLanguageTexts();
-            jQuery(document).ready(initFlipbook);
+            updateUILanguage();
+
+            jQuery(document).ready(function() {
+                initFlipbook();
+            });
 
         })();
     </script>
