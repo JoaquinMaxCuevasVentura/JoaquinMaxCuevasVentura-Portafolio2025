@@ -239,55 +239,68 @@
       font-weight: 300;
     }
 
+    /* --- SECCIÓN CONTACTO MODIFICADA --- */
     .modal-contact {
       margin-top: 30px;
       border-top: 1px solid #222;
       padding-top: 25px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
     }
 
     .contact-link {
-      color: #666;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: color 0.2s ease;
-      cursor: pointer;
-      padding: 8px 4px;
-      border: none;
       background: transparent;
-      display: block;
+      border: none;
+      cursor: pointer;
       width: 100%;
+      padding: 5px 0;
+      transition: opacity 0.2s ease;
     }
 
-    .contact-link span {
+    /* Etiqueta: Pequeña, gris y mayúsculas (CORREO / TELEFONO) */
+    .contact-label {
       display: block;
-      color: #fff;
-      font-weight: 400;
+      color: #666;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    /* Valor: Blanco y tamaño normal (El correo o número real) */
+    .contact-value {
+      display: block;
+      color: #ffffff;
       font-size: 14px;
       letter-spacing: 0.5px;
-      margin-top: 4px;
+      font-weight: 400;
       transition: color 0.2s ease;
       word-break: break-word;
     }
 
-    .contact-link:hover,
-    .contact-link:focus {
+    /* --- HOVER SOLO EN EL VALOR --- */
+    .contact-link:hover .contact-value,
+    .contact-link:focus .contact-value {
       color: var(--accent-color);
-      outline: none;
     }
-
-    .contact-link:hover span,
-    .contact-link:focus span {
-      color: var(--accent-color);
+    
+    .contact-link:hover .contact-label,
+    .contact-link:focus .contact-label {
+      color: #666; 
     }
 
     .contact-link:focus-visible {
       outline: 2px solid var(--accent-color);
-      outline-offset: 2px;
+      outline-offset: 4px;
+      border-radius: 4px;
     }
 
     .contact-link[aria-disabled='true'] {
@@ -361,12 +374,12 @@
         font-size: 13px;
       }
 
-      .contact-link {
-        font-size: 10px;
+      .contact-label {
+        font-size: 9px;
         letter-spacing: 1.5px;
       }
 
-      .contact-link span {
+      .contact-value {
         font-size: 12px;
       }
 
@@ -397,7 +410,7 @@
         font-size: 14px;
       }
 
-      .contact-link span {
+      .contact-value {
         font-size: 11px;
       }
 
@@ -491,29 +504,32 @@
         <p id="modal-tagline">Arquitectura y diseño gráfico</p>
 
         <div class="modal-contact" role="group" aria-label="Información de contacto">
+          <!-- CORREO -->
           <a
             id="email-link"
             href="mailto:JoACKo333@gmail.com"
             class="contact-link"
-            aria-label="Enviar correo electrónico a JoACKo333@gmail.com"
+            aria-label="Enviar correo electrónico"
           >
-            <span class="sr-only">Email:</span>
-            <span id="email-label" class="hidden">CORREO</span>
-            CORREO
-            <span id="email-value">JoACKo333@gmail.com</span>
+            <span id="email-label" class="contact-label">CORREO</span>
+            <span id="email-value" class="contact-value">JoACKo333@gmail.com</span>
           </a>
 
+          <!-- TELÉFONO -->
           <button
             type="button"
             class="contact-link"
             id="phone-btn"
-            aria-label="Copiar número de teléfono al portapapeles"
+            aria-label="Copiar número de teléfono"
           >
-            <span id="phone-label">TELÉFONO / WHATSAPP</span>
-            <span id="phone-display">+591 78834651</span>
+            <span id="phone-label" class="contact-label">TELÉFONO / WHATSAPP</span>
+            <span id="phone-display" class="contact-value">+591 78834651</span>
           </button>
 
-          <div id="location-text" class="contact-link" aria-disabled="true" role="text">La Paz, Bolivia</div>
+          <!-- UBICACIÓN -->
+          <div class="contact-link" aria-disabled="true" role="text">
+            <span id="location-text" class="contact-label" style="margin-bottom:0; font-size:11px; letter-spacing:2px;">La Paz, Bolivia</span>
+          </div>
         </div>
       </div>
     </div>
@@ -533,7 +549,6 @@
       // --- CONFIG ---
       const PHONE_NUMBER = '+591 78834651';
 
-      // Ajusta estos nombres exactamente como los tengas en tu repositorio (case-sensitive en GitHub Pages)
       const PDF_ES = 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_ES.pdf';
       const PDF_EN = 'PORTAFOLIO_2026_JoaquinMaxCuevasVentura_v01_EN.pdf';
 
@@ -564,6 +579,7 @@
       let currentLang = 'es';
       let lastFocusedElement = null;
 
+      // --- DICCIONARIO ACTUALIZADO ---
       const I18N = {
         es: {
           langAttr: 'es',
@@ -574,10 +590,14 @@
           modalCloseAria: 'Cerrar ventana de información',
           modalSubtitle: 'PORTAFOLIO 2026',
           modalTagline: 'Arquitectura y diseño gráfico',
+          
+          // Sección Contacto
           emailAria: 'Enviar correo electrónico a JoACKo333@gmail.com',
+          emailLabel: 'CORREO',
           phoneLabel: 'TELÉFONO / WHATSAPP',
           phoneAria: 'Copiar número de teléfono al portapapeles',
-          locationText: 'La Paz, Bolivia',
+          locationText: 'LA PAZ, BOLIVIA',
+
           pdfError1: 'No se pudo cargar el documento.',
           pdfError2: 'Por favor, recarga la página.',
           clipboardOk: '¡NÚMERO COPIADO!',
@@ -609,10 +629,14 @@
           modalCloseAria: 'Close information dialog',
           modalSubtitle: 'PORTFOLIO 2026',
           modalTagline: 'Architecture & graphic design',
+          
+          // Contact Section
           emailAria: 'Send email to JoACKo333@gmail.com',
+          emailLabel: 'EMAIL',
           phoneLabel: 'PHONE / WHATSAPP',
           phoneAria: 'Copy phone number to clipboard',
-          locationText: 'La Paz, Bolivia',
+          locationText: 'LA PAZ, BOLIVIA',
+
           pdfError1: 'Could not load the document.',
           pdfError2: 'Please reload the page.',
           clipboardOk: 'NUMBER COPIED!',
@@ -688,7 +712,13 @@
         if (modalSubtitleEl) modalSubtitleEl.textContent = t.modalSubtitle;
         if (modalTaglineEl) modalTaglineEl.textContent = t.modalTagline;
 
+        // Actualización de Contacto
         if (emailLinkEl) emailLinkEl.setAttribute('aria-label', t.emailAria);
+        
+        // Actualizar el Label del correo (CORREO vs EMAIL)
+        const emailLabelEl = document.getElementById('email-label');
+        if (emailLabelEl) emailLabelEl.textContent = t.emailLabel;
+
         if (phoneLabelEl) phoneLabelEl.textContent = t.phoneLabel;
         phoneBtn.setAttribute('aria-label', t.phoneAria);
         if (locationTextEl) locationTextEl.textContent = t.locationText;
@@ -696,14 +726,14 @@
         if (pdfErr1) pdfErr1.textContent = t.pdfError1;
         if (pdfErr2) pdfErr2.textContent = t.pdfError2;
 
-        // Actualizar si existe el botón info (se crea dentro de dFlip)
+        // Actualizar si existe el botón info
         const infoBtn = document.getElementById('btn-info-custom');
         if (infoBtn) {
           infoBtn.setAttribute('title', t.infoBtnTitle);
           infoBtn.setAttribute('aria-label', t.infoBtnAria);
         }
 
-        // Actualizar textos/aria del selector de idioma si existe
+        // Actualizar textos/aria del selector de idioma
         const langGroup = document.getElementById('df-ui-langgroup');
         if (langGroup) langGroup.setAttribute('aria-label', t.langGroupAria);
 
@@ -833,7 +863,6 @@
 
       // --- dFlip ---
       function buildLangControls($controls) {
-        // Evitar duplicados
         if (document.getElementById('df-ui-langgroup')) return;
 
         const t = I18N[currentLang] || I18N.es;
@@ -880,7 +909,6 @@
           onToggle('en');
         });
 
-        // Enter/Space support
         $btnES.on('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
             e.preventDefault();
@@ -933,7 +961,6 @@
           hideControls: 'share,download,more',
 
           onReady: function () {
-            // Botón info
             const existingInfoBtn = document.getElementById('btn-info-custom');
             if (!existingInfoBtn) {
               const infoBtn = $('<button>', {
@@ -957,8 +984,6 @@
                 }
               });
 
-              // dFlip puede crear 2 barras: arriba (vacía/invisible) y abajo (activa).
-              // Insertamos SOLO en la barra activa (la que contiene "next").
               let $controls = $('.df-ui-wrapper')
                 .filter(function () {
                   return (
@@ -968,7 +993,6 @@
                 })
                 .first();
 
-              // Fallback: usar la última barra (normalmente la inferior)
               if ($controls.length === 0) {
                 $controls = $('.df-ui-wrapper').last();
               }
@@ -977,11 +1001,9 @@
                 $controls.append(infoBtn);
               }
             } else {
-              // si el viewer se re-creó pero el DOM reutilizó IDs (raro), al menos refrescamos textos
               applyI18n(currentLang);
             }
 
-            // Selector ES/EN (alineado en la misma barra) — solo en la barra activa
             let $controlsLang = $('.df-ui-wrapper')
               .filter(function () {
                 return (
@@ -991,7 +1013,6 @@
               })
               .first();
 
-            // Fallback: si dFlip cambia clases internamente, usar la última barra (suele ser la inferior)
             if ($controlsLang.length === 0) {
               $controlsLang = $('.df-ui-wrapper').last();
             }
@@ -1000,7 +1021,6 @@
               buildLangControls($controlsLang);
             }
 
-            // Accesibilidad básica para botones dFlip
             $('.df-ui-btn').each(function () {
               const $btn = $(this);
               const title = $btn.attr('title') || '';
@@ -1018,7 +1038,6 @@
         };
 
         try {
-          // Reset del contenedor para forzar recarga completa al cambiar de idioma
           const container = document.getElementById('flipbook-container');
           if (container) container.innerHTML = '';
 
@@ -1045,11 +1064,7 @@
         applyI18n(currentLang);
         updateLangButtonState();
 
-        // Recargar PDF en el idioma seleccionado
         initFlipbook();
-
-        // Si el modal está abierto, mantenerlo abierto pero ya traducido
-        // (applyI18n ya actualizó textos)
       }
 
       // --- LISTENERS ---
@@ -1093,7 +1108,6 @@
       // --- INIT ---
       initGrained();
 
-      // Idioma inicial: URL > localStorage > default(es)
       (function initLanguage() {
         const fromUrl = getLangFromUrl();
         if (fromUrl) {
