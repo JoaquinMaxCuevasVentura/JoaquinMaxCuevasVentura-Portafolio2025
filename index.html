@@ -435,6 +435,30 @@
       }
     }
 
+    /* --- MODO PANTALLA COMPLETA --- */
+    /* Fondo para el contenedor de dFlip en fullscreen */
+    .df-container.df-fullscreen,
+    .df-container.df-fullscreen .df-book-wrapper,
+    #flipbook-container.df-fullscreen {
+      background-color: var(--bg-color) !important;
+    }
+
+    /* Selector nativo de fullscreen del navegador */
+    #flipbook-container:fullscreen,
+    #flipbook-container:-webkit-full-screen,
+    #flipbook-container:-moz-full-screen,
+    #flipbook-container:-ms-fullscreen {
+      background-color: var(--bg-color) !important;
+    }
+
+    /* Para el wrapper interno de dFlip */
+    .df-container:fullscreen,
+    .df-container:-webkit-full-screen,
+    .df-container:-moz-full-screen,
+    .df-container:-ms-fullscreen {
+      background-color: var(--bg-color) !important;
+    }
+
     /* Skip link */
     .sr-only {
       position: absolute;
