@@ -58,19 +58,31 @@
       width: 100vw;
       position: relative;
       z-index: 10;
+      overflow: hidden;
     }
 
-    /* --- INTERFAZ GENERAL (Escritorio) --- */
+    /* Asegurar que el contenedor de dFlip no cause overflow */
+    .df-container {
+      max-width: 100vw !important;
+      overflow-x: hidden !important;
+    }
+
+    /* --- INTERFAZ MINIMALISTA --- */
     .df-ui-wrapper {
       background: transparent !important;
       box-shadow: none !important;
       border: none !important;
       padding-bottom: 30px !important;
+      padding-left: 8px !important;
+      padding-right: 8px !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      flex-wrap: wrap !important; /* Por defecto wrap en PC si la pantalla es rara */
+      flex-wrap: nowrap !important;
       gap: 0 !important;
+      max-width: 100vw !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
     }
 
     .df-ui-btn {
@@ -87,6 +99,8 @@
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      font-size: 13px !important;
+      flex-shrink: 0 !important;
     }
 
     .df-ui-btn:hover,
@@ -263,6 +277,7 @@
       transition: opacity 0.2s ease;
     }
 
+    /* Etiqueta: Pequeña, gris y mayúsculas (CORREO / TELEFONO) */
     .contact-label {
       display: block;
       color: #666;
@@ -274,6 +289,7 @@
       transition: color 0.2s ease;
     }
 
+    /* Valor: Blanco y tamaño normal (El correo o número real) */
     .contact-value {
       display: block;
       color: #ffffff;
@@ -284,6 +300,7 @@
       word-break: break-word;
     }
 
+    /* --- HOVER SOLO EN EL VALOR --- */
     .contact-link:hover .contact-value,
     .contact-link:focus .contact-value {
       color: var(--accent-color);
@@ -350,133 +367,190 @@
       display: block;
     }
 
-    /* --- CORRECCIONES RESPONSIVE PARA EL MODAL --- */
+    /* Responsive: tablets y móviles grandes */
+    @media screen and (max-width: 640px) {
+      .df-ui-wrapper {
+        padding-bottom: 25px !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+      }
+
+      .df-ui-btn {
+        margin: 0 5px !important;
+        font-size: 12px !important;
+      }
+
+      .df-ui-btn i {
+        font-size: 15px !important;
+      }
+
+      .df-ui-page input {
+        width: 38px !important;
+        font-size: 11px !important;
+      }
+
+      .df-ui-langbtn {
+        font-size: 11px !important;
+        letter-spacing: 1.5px !important;
+      }
+
+      .df-ui-langgroup {
+        margin-left: 4px !important;
+      }
+    }
+
+    /* Responsive: móviles estrechos */
     @media screen and (max-width: 380px) {
+      .df-ui-wrapper {
+        padding-bottom: 20px !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        gap: 6px 0 !important;
+      }
+
+      .df-ui-btn {
+        margin: 0 4px !important;
+        font-size: 11px !important;
+        padding: 4px !important;
+      }
+
+      .df-ui-btn i {
+        font-size: 14px !important;
+      }
+
+      .df-ui-page input {
+        width: 35px !important;
+        font-size: 11px !important;
+      }
+
+      .df-ui-langbtn {
+        font-size: 10px !important;
+        letter-spacing: 1.5px !important;
+        margin: 0 2px !important;
+      }
+
+      .df-ui-langgroup {
+        gap: 0;
+        margin-left: 2px !important;
+      }
+
+      .df-ui-langsep {
+        margin: 0 1px !important;
+        font-size: 10px !important;
+      }
+
       .modal-content {
         width: 92%;
         padding: 15px;
       }
+
       .modal-title {
         font-size: 16px;
         letter-spacing: 1px;
       }
+
       .modal-subtitle {
         font-size: 10px;
         margin-bottom: 20px;
       }
+
       .modal-body {
         font-size: 13px;
       }
+
       .contact-label {
         font-size: 9px;
         letter-spacing: 1.5px;
       }
+
       .contact-value {
         font-size: 12px;
       }
+
       .close-modal {
         top: -40px;
         right: -5px;
         font-size: 26px;
       }
+
       .modal-contact {
         gap: 14px;
         padding-top: 20px;
       }
     }
 
+    /* Responsive: móviles muy pequeños */
     @media screen and (max-width: 320px) {
+      .df-ui-wrapper {
+        padding-bottom: 18px !important;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+      }
+
+      .df-ui-btn {
+        margin: 0 3px !important;
+        font-size: 10px !important;
+        padding: 3px !important;
+      }
+
+      .df-ui-btn i {
+        font-size: 13px !important;
+      }
+
+      .df-ui-page input {
+        width: 32px !important;
+        font-size: 10px !important;
+      }
+
+      .df-ui-langbtn {
+        font-size: 9px !important;
+        letter-spacing: 1px !important;
+      }
+
+      .df-ui-langsep {
+        font-size: 9px !important;
+      }
+
       .modal-content {
         width: 95%;
         padding: 12px;
       }
+
       .modal-title {
         font-size: 14px;
       }
+
       .contact-value {
         font-size: 11px;
       }
-      .df-ui-langbtn {
-        font-size: 10px;
-      }
     }
 
+    /* Responsive: pantallas cortas */
     @media screen and (max-height: 500px) {
       .modal-content {
         max-height: 85vh;
         padding-top: 10px;
         padding-bottom: 10px;
       }
+
       .modal-subtitle {
         margin-bottom: 15px;
       }
+
       .close-modal {
         top: -35px;
       }
     }
 
-    /* 
-       ========================================================================
-       CORRECCIÓN CRÍTICA DE BARRA DE HERRAMIENTAS EN MÓVILES
-       ========================================================================
-    */
-    @media screen and (max-width: 768px) {
-      /* 1. Ocultamos las lupas para ganar espacio (el usuario hace pinch-zoom) */
-      .df-ui-btn.df-ui-zoomIn,
-      .df-ui-btn.df-ui-zoomOut {
-        display: none !important;
-      }
-
-      /* 2. Forzamos una sola línea y reducimos espacios en el contenedor */
-      .df-ui-wrapper {
-        gap: 2px !important;
-        padding-bottom: 20px !important;
-        width: 100% !important;
-        flex-wrap: nowrap !important; /* IMPORTANTE: Evita el salto de línea */
-        justify-content: center !important;
-      }
-
-      /* 3. Reducimos el tamaño de los botones y sus márgenes */
-      .df-ui-btn {
-        margin: 0 1px !important;
-        padding: 0 4px !important;
-        transform: scale(0.9); /* Botones un poco más pequeños */
-      }
-      
-      /* Evitamos que el hover escale demasiado en móvil */
-      .df-ui-btn:hover,
-      .df-ui-btn.active,
-      .df-ui-btn.info-active,
-      .df-ui-btn.lang-active {
-        transform: scale(1.1); 
-      }
-
-      /* 4. Ajuste del input de página */
-      .df-ui-page input {
-        width: 30px !important;
-        font-size: 11px !important;
-        padding: 0 !important;
-      }
-
-      /* 5. Ajustes del grupo de idiomas */
-      .df-ui-langgroup {
-        margin-left: 4px !important;
-      }
-      
-      .df-ui-langbtn {
-        font-size: 10px !important;
-        letter-spacing: 1px !important;
-      }
-    }
-    /* FIN DE CORRECCIÓN RESPONSIVE */
-
     /* --- MODO PANTALLA COMPLETA --- */
+    /* Fondo para el contenedor de dFlip en fullscreen */
     .df-container.df-fullscreen,
     .df-container.df-fullscreen .df-book-wrapper,
     #flipbook-container.df-fullscreen {
       background-color: var(--bg-color) !important;
     }
 
+    /* Selector nativo de fullscreen del navegador */
     #flipbook-container:fullscreen,
     #flipbook-container:-webkit-full-screen,
     #flipbook-container:-moz-full-screen,
@@ -484,6 +558,7 @@
       background-color: var(--bg-color) !important;
     }
 
+    /* Para el wrapper interno de dFlip */
     .df-container:fullscreen,
     .df-container:-webkit-full-screen,
     .df-container:-moz-full-screen,
