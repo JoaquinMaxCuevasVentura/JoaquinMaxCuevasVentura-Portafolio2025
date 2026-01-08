@@ -71,6 +71,7 @@
       justify-content: center !important;
       flex-wrap: wrap !important;
       gap: 0 !important;
+      row-gap: 8px !important;
     }
 
     .df-ui-btn {
@@ -87,6 +88,8 @@
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      min-height: 30px !important;
+      padding: 6px !important;
     }
 
     .df-ui-btn:hover,
@@ -353,6 +356,64 @@
       display: block;
     }
 
+    /* Responsive: ajustes para móviles */
+    @media screen and (max-width: 768px) {
+      /* Reducir espaciado entre botones */
+      .df-ui-btn {
+        margin: 0 2px !important;
+        font-size: 11px !important;
+        min-height: 36px !important;
+        padding: 6px 8px !important;
+      }
+
+      /* Reducir tamaño de iconos */
+      .df-ui-btn i {
+        font-size: 16px !important;
+      }
+
+      /* Ajustar input de página */
+      .df-ui-page input {
+        width: 35px !important;
+        font-size: 11px !important;
+        min-height: 36px !important;
+      }
+
+      /* Reducir espaciado del grupo de idiomas */
+      .df-ui-langgroup {
+        margin-left: 3px;
+        gap: 0;
+      }
+
+      .df-ui-langbtn {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        padding: 6px 8px !important;
+        min-height: 36px !important;
+      }
+
+      .df-ui-langsep {
+        margin: 0 1px;
+      }
+
+      /* Asegurar que la barra se ajuste */
+      .df-ui-wrapper {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        padding-bottom: 20px !important;
+        gap: 2px !important;
+        min-height: auto !important;
+        flex-wrap: wrap !important;
+        row-gap: 8px !important;
+      }
+
+      /* Permitir que los controles ocupen múltiples líneas si es necesario */
+      .df-ui-btn,
+      .df-ui-page,
+      .df-ui-langgroup {
+        flex-shrink: 0;
+      }
+    }
+
     /* Responsive: móviles estrechos */
     @media screen and (max-width: 380px) {
       .modal-content {
@@ -394,9 +455,33 @@
         padding-top: 20px;
       }
 
+      /* Ajustes adicionales para controles */
+      .df-ui-btn {
+        margin: 0 1px !important;
+        font-size: 10px !important;
+        padding: 5px 6px !important;
+        min-height: 34px !important;
+      }
+
+      .df-ui-btn i {
+        font-size: 14px !important;
+      }
+
+      .df-ui-page input {
+        width: 30px !important;
+        font-size: 10px !important;
+        min-height: 34px !important;
+      }
+
       .df-ui-langbtn {
-        font-size: 11px;
-        letter-spacing: 1.5px;
+        font-size: 9px;
+        letter-spacing: 1px;
+        padding: 5px 6px !important;
+        min-height: 34px !important;
+      }
+
+      .df-ui-wrapper {
+        row-gap: 6px !important;
       }
     }
 
@@ -414,8 +499,34 @@
         font-size: 11px;
       }
 
+      /* Ajustes ultra compactos para controles */
+      .df-ui-btn {
+        margin: 0 1px !important;
+        font-size: 9px !important;
+        padding: 4px 5px !important;
+        min-height: 32px !important;
+      }
+
+      .df-ui-btn i {
+        font-size: 13px !important;
+      }
+
+      .df-ui-page input {
+        width: 28px !important;
+        font-size: 9px !important;
+        min-height: 32px !important;
+      }
+
       .df-ui-langbtn {
-        font-size: 10px;
+        font-size: 8px;
+        letter-spacing: 1px;
+        padding: 4px 5px !important;
+        min-height: 32px !important;
+      }
+
+      .df-ui-wrapper {
+        padding-bottom: 16px !important;
+        row-gap: 5px !important;
       }
     }
 
@@ -971,6 +1082,14 @@
         const t = I18N[currentLang] || I18N.es;
         const pdfName = getPdfForLang(currentLang);
 
+        // Detectar si es móvil
+        const isMobile = window.innerWidth <= 768;
+        
+        // Controles optimizados según el dispositivo
+        const controls = isMobile 
+          ? 'altPrev,pageNumber,altNext,outline,thumbnail,zoomIn,fullScreen'
+          : 'altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen';
+
         const bookOptions = {
           source: pdfName,
           webgl: true,
@@ -981,7 +1100,7 @@
 
           text: t.dflipText,
 
-          allControls: 'altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen',
+          allControls: controls,
           hideControls: 'share,download,more',
 
           onReady: function () {
@@ -1149,6 +1268,21 @@
 
       jQuery(document).ready(function () {
         initFlipbook();
+      });
+
+      // Reinicializar en cambio de orientación/resize para ajustar controles
+      let resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          const newWidth = window.innerWidth;
+          const wasMobile = newWidth <= 768;
+          
+          // Solo reinicializar si hay cambio significativo (ej: rotación de pantalla)
+          if ((wasMobile && newWidth > 768) || (!wasMobile && newWidth <= 768)) {
+            initFlipbook();
+          }
+        }, 250);
       });
     })();
   </script>
