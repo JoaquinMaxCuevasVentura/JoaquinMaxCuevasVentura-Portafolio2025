@@ -67,12 +67,16 @@
       overflow-x: hidden !important;
     }
 
-    /* --- INTERFAZ MINIMALISTA --- */
+    /* --- INTERFAZ MINIMALISTA CON RESPONSIVE MEJORADO --- */
     .df-ui-wrapper {
       background: transparent !important;
       box-shadow: none !important;
       border: none !important;
-      padding: 10px 8px 30px 8px !important;
+      /* ALTURA FIJA Y COHERENTE - DESKTOP */
+      height: 70px !important;
+      min-height: 70px !important;
+      max-height: 70px !important;
+      padding: 0 8px !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -84,7 +88,6 @@
       -webkit-overflow-scrolling: touch !important;
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
-      min-height: 50px !important;
     }
 
     .df-ui-wrapper::-webkit-scrollbar {
@@ -112,9 +115,12 @@
       line-height: 1.2 !important;
     }
 
-    /* TAMAÑO DE ICONOS AUMENTADO */
-    .df-ui-btn i {
-      font-size: 18px !important;
+    /* Iconos dentro de botones - tamaño proporcional */
+    .df-ui-btn i,
+    .df-ui-btn [class^="ti-"],
+    .df-ui-btn [class*=" ti-"] {
+      font-size: 16px !important;
+      line-height: 1 !important;
     }
 
     .df-ui-btn:hover,
@@ -174,25 +180,28 @@
       align-items: center;
       gap: 0;
       margin-left: 6px;
+      height: 100%;
     }
 
     .df-ui-langsep {
       color: rgba(255, 255, 255, 0.35);
       opacity: 1;
-      font-size: 12px;
+      font-size: 11px;
       user-select: none;
-      margin: 0 2px;
+      margin: 0 3px;
       transform: none;
       text-shadow: none;
+      line-height: 1.2;
     }
 
     .df-ui-langbtn {
-      font-size: 12px;
-      letter-spacing: 2px;
-      font-weight: 600;
-      padding: 0;
-      line-height: 1;
+      font-size: 11px !important;
+      letter-spacing: 1px !important;
+      font-weight: 400 !important;
+      padding: 8px 4px !important;
+      line-height: 1.2 !important;
       text-transform: uppercase;
+      min-height: 32px !important;
     }
 
     /* --- GESTIÓN DE HIPERVÍNCULOS --- */
@@ -381,11 +390,13 @@
       display: block;
     }
 
-    /* Responsive: tablets y móviles grandes */
+    /* Responsive: tablets y móviles grandes (≤640px) */
     @media screen and (max-width: 640px) {
       .df-ui-wrapper {
-        padding: 8px 4px 25px 4px !important;
-        min-height: 45px !important;
+        height: 60px !important;
+        min-height: 60px !important;
+        max-height: 60px !important;
+        padding: 0 4px !important;
       }
 
       .df-ui-btn {
@@ -395,8 +406,10 @@
         min-height: 28px !important;
       }
 
-      .df-ui-btn i {
-        font-size: 17px !important;
+      .df-ui-btn i,
+      .df-ui-btn [class^="ti-"],
+      .df-ui-btn [class*=" ti-"] {
+        font-size: 14px !important;
       }
 
       .df-ui-page input {
@@ -406,7 +419,9 @@
 
       .df-ui-langbtn {
         font-size: 10px !important;
-        letter-spacing: 1.5px !important;
+        letter-spacing: 0.8px !important;
+        padding: 6px 3px !important;
+        min-height: 28px !important;
       }
 
       .df-ui-langgroup {
@@ -414,15 +429,18 @@
       }
 
       .df-ui-langsep {
-        margin: 0 1px !important;
+        margin: 0 2px !important;
+        font-size: 10px !important;
       }
     }
 
-    /* Responsive: móviles estrechos */
+    /* Responsive: móviles estrechos (≤380px) */
     @media screen and (max-width: 380px) {
       .df-ui-wrapper {
-        padding: 6px 3px 20px 3px !important;
-        min-height: 42px !important;
+        height: 55px !important;
+        min-height: 55px !important;
+        max-height: 55px !important;
+        padding: 0 3px !important;
       }
 
       .df-ui-btn {
@@ -432,8 +450,10 @@
         min-height: 26px !important;
       }
 
-      .df-ui-btn i {
-        font-size: 16px !important;
+      .df-ui-btn i,
+      .df-ui-btn [class^="ti-"],
+      .df-ui-btn [class*=" ti-"] {
+        font-size: 13px !important;
       }
 
       .df-ui-page input {
@@ -443,8 +463,10 @@
 
       .df-ui-langbtn {
         font-size: 9px !important;
-        letter-spacing: 1px !important;
+        letter-spacing: 0.5px !important;
         margin: 0 1px !important;
+        padding: 5px 2px !important;
+        min-height: 26px !important;
       }
 
       .df-ui-langgroup {
@@ -496,11 +518,13 @@
       }
     }
 
-    /* Responsive: móviles muy pequeños */
+    /* Responsive: móviles muy pequeños (≤320px) */
     @media screen and (max-width: 320px) {
       .df-ui-wrapper {
-        padding: 5px 2px 18px 2px !important;
-        min-height: 40px !important;
+        height: 50px !important;
+        min-height: 50px !important;
+        max-height: 50px !important;
+        padding: 0 2px !important;
       }
 
       .df-ui-btn {
@@ -510,8 +534,10 @@
         min-height: 24px !important;
       }
 
-      .df-ui-btn i {
-        font-size: 15px !important;
+      .df-ui-btn i,
+      .df-ui-btn [class^="ti-"],
+      .df-ui-btn [class*=" ti-"] {
+        font-size: 12px !important;
       }
 
       .df-ui-page input {
@@ -521,12 +547,14 @@
 
       .df-ui-langbtn {
         font-size: 8px !important;
-        letter-spacing: 0.5px !important;
+        letter-spacing: 0.3px !important;
+        padding: 4px 2px !important;
+        min-height: 24px !important;
       }
 
       .df-ui-langsep {
         font-size: 8px !important;
-        margin: 0 !important;
+        margin: 0 1px !important;
       }
 
       .modal-content {
