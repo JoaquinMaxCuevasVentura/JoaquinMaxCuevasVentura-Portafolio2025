@@ -247,6 +247,35 @@
       cursor: pointer !important;
     }
 
+    /* --- Limpieza de artefactos visuales (línea sutil en esquina superior derecha) --- */
+    /* dFlip a veces añade pseudo-elementos/bordes para sombras o separadores. */
+    .df-container::before,
+    .df-container::after,
+    .df-book-wrapper::before,
+    .df-book-wrapper::after,
+    .df-ui-wrapper::before,
+    .df-ui-wrapper::after,
+    .df-book-shadow {
+      content: none !important;
+      display: none !important;
+    }
+
+    /* Asegurar que no queden bordes/filos de UI flotante */
+    .df-ui-controls,
+    .df-ui-controls * {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    /* Por si el artefacto viene del canvas de grano (gap de 1px por redondeo) */
+    #grained-container {
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+    }
+
     /* --- VENTANA MODAL INFO --- */
     .modal-overlay {
       display: none;
