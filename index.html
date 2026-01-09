@@ -24,6 +24,30 @@
       --accent-color: #dc6b2f;
       --text-main: #ffffff;
       --ui-opacity: 0.7;
+
+      /* Tamaño unificado y responsive de íconos (según tu tabla) */
+      --df-icon-size: 16px; /* Desktop (>640px) */
+    }
+
+    /* Tablets/Móviles (≤640px) */
+    @media screen and (max-width: 640px) {
+      :root {
+        --df-icon-size: 15px;
+      }
+    }
+
+    /* Móviles estrechos (≤380px) */
+    @media screen and (max-width: 380px) {
+      :root {
+        --df-icon-size: 14px;
+      }
+    }
+
+    /* Móviles muy pequeños (≤320px) */
+    @media screen and (max-width: 320px) {
+      :root {
+        --df-icon-size: 13px;
+      }
     }
 
     *,
@@ -110,6 +134,31 @@
       font-size: 13px !important;
       flex-shrink: 0 !important;
       line-height: 1.2 !important;
+    }
+
+    /*
+      Normalización de íconos: mismo tamaño en todos los botones de la barra.
+      Algunos glifos de fuentes de íconos aparentan tamaños distintos; por eso se fuerza:
+      - font-size fijo
+      - line-height 1
+      - caja 1em x 1em centrada
+    */
+    .df-ui-wrapper .df-ui-btn i {
+      font-size: var(--df-icon-size) !important;
+      line-height: 1 !important;
+      width: 1em;
+      height: 1em;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      flex: 0 0 auto;
+    }
+
+    /* Si dFlip usa spans/elementos con clases de ícono en lugar de <i> */
+    .df-ui-wrapper [class*="ti-"] {
+      font-size: var(--df-icon-size) !important;
+      line-height: 1 !important;
     }
 
     .df-ui-btn:hover,
@@ -314,10 +363,10 @@
     .contact-link:focus .contact-value {
       color: var(--accent-color);
     }
-    
+
     .contact-link:hover .contact-label,
     .contact-link:focus .contact-label {
-      color: #666; 
+      color: #666;
     }
 
     .contact-link:focus-visible {
@@ -390,10 +439,6 @@
         min-height: 28px !important;
       }
 
-      .df-ui-btn i {
-        font-size: 14px !important;
-      }
-
       .df-ui-page input {
         width: 36px !important;
         font-size: 11px !important;
@@ -425,10 +470,6 @@
         padding: 5px 2px !important;
         font-size: 10px !important;
         min-height: 26px !important;
-      }
-
-      .df-ui-btn i {
-        font-size: 13px !important;
       }
 
       .df-ui-page input {
@@ -503,10 +544,6 @@
         padding: 4px 2px !important;
         font-size: 9px !important;
         min-height: 24px !important;
-      }
-
-      .df-ui-btn i {
-        font-size: 12px !important;
       }
 
       .df-ui-page input {
@@ -734,7 +771,7 @@
           modalCloseAria: 'Cerrar ventana de información',
           modalSubtitle: 'PORTAFOLIO 2026',
           modalTagline: 'Arquitectura y diseño gráfico',
-          
+
           // Sección Contacto
           emailAria: 'Enviar correo electrónico a JoACKo333@gmail.com',
           emailLabel: 'CORREO',
@@ -773,7 +810,7 @@
           modalCloseAria: 'Close information dialog',
           modalSubtitle: 'PORTFOLIO 2026',
           modalTagline: 'Architecture & graphic design',
-          
+
           // Contact Section
           emailAria: 'Send email to JoACKo333@gmail.com',
           emailLabel: 'EMAIL',
@@ -858,7 +895,7 @@
 
         // Actualización de Contacto
         if (emailLinkEl) emailLinkEl.setAttribute('aria-label', t.emailAria);
-        
+
         // Actualizar el Label del correo (CORREO vs EMAIL)
         const emailLabelEl = document.getElementById('email-label');
         if (emailLabelEl) emailLabelEl.textContent = t.emailLabel;
