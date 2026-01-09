@@ -256,7 +256,9 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.96);
-      z-index: 9999;
+      /* En fullscreen, el navegador solo renderiza descendientes del elemento en pantalla completa.
+         Además, dFlip puede usar z-index altos. Este valor asegura prioridad visual. */
+      z-index: 2147483647;
       justify-content: center;
       align-items: center;
       opacity: 0;
@@ -743,6 +745,42 @@
       const phoneDisplay = document.getElementById('phone-display');
       const pdfErrorEl = document.getElementById('pdf-error');
 
+      // --- Fullscreen: asegurar que el modal sea visible y clickeable ---
+      // En fullscreen, solo se ven los elementos dentro del elemento que está en fullscreen.
+      // Si el flipbook entra en fullscreen, movemos el modal dentro de ese árbol.
+      const modalPlaceholder = document.createElement('div');
+      modalPlaceholder.id = 'modal-placeholder';
+      modalPlaceholder.style.display = 'none';
+      if (modal && modal.parentNode) modal.parentNode.insertBefore(modalPlaceholder, modal);
+
+      function getFullscreenElement() {
+        return (
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement ||
+          document.msFullscreenElement ||
+          null
+        );
+      }
+
+      function restoreModalToOriginalPlace() {
+        if (!modal || !modalPlaceholder || !modalPlaceholder.parentNode) return;
+        modalPlaceholder.parentNode.insertBefore(modal, modalPlaceholder.nextSibling);
+      }
+
+      function ensureModalInFullscreenLayer() {
+        const fsEl = getFullscreenElement();
+
+        if (fsEl) {
+          if (modal && !fsEl.contains(modal)) fsEl.appendChild(modal);
+        } else {
+          // Volver al DOM normal
+          if (modal && modalPlaceholder && modal.parentNode !== modalPlaceholder.parentNode) {
+            restoreModalToOriginalPlace();
+          }
+        }
+      }
+
       // i18n targets
       const htmlEl = document.documentElement;
       const metaDescriptionEl = document.getElementById('meta-description');
@@ -998,6 +1036,9 @@
       }
 
       function openModal() {
+        // Si estamos en fullscreen, el modal debe ser descendiente del elemento fullscreen
+        ensureModalInFullscreenLayer();
+
         lastFocusedElement = document.activeElement;
         modal.style.display = 'flex';
         requestAnimationFrame(function () {
@@ -1154,16 +1195,6 @@
                 'aria-haspopup': 'dialog'
               }).html('<i class="ti-info-alt" aria-hidden="true"></i>');
 
-              infoBtn.on('click', function () {
-                toggleInfo();
-              });
-
-              infoBtn.on('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
-                  e.preventDefault();
-                  toggleInfo();
-                }
-              });
 
               let $controls = $('.df-ui-wrapper')
                 .filter(function () {
@@ -1251,6 +1282,38 @@
       // --- LISTENERS ---
       closeModalBtn.addEventListener('click', closeModal);
       phoneBtn.addEventListener('click', copyPhone);
+
+      // Delegación: dFlip puede recrear/mover la barra en fullscreen, así que escuchamos el botón "i" globalmente
+      document.addEventListener(
+        'click',
+        function (e) {
+          const target = e.target && e.target.closest ? e.target.closest('#btn-info-custom') : null;
+          if (!target) return;
+          e.preventDefault();
+          toggleInfo();
+        },
+        true
+      );
+
+      document.addEventListener(
+        'keydown',
+        function (e) {
+          const active = document.activeElement;
+          if (!active || active.id !== 'btn-info-custom') return;
+          if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+            e.preventDefault();
+            toggleInfo();
+          }
+        },
+        true
+      );
+
+      // Mantener el modal en el árbol correcto al entrar/salir de fullscreen
+      ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (evt) {
+        document.addEventListener(evt, function () {
+          ensureModalInFullscreenLayer();
+        });
+      });
 
       modal.addEventListener('click', function (e) {
         if (e.target === modal) closeModal();
